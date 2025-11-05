@@ -105,7 +105,7 @@ export default function PorscheScene({
           <Button
             variant="outline"
             size="sm"
-            className="text-base text-white font-mono bg-black/30 border border-3 border-slate-50 rounded-md hover:bg-yellow-[#e6c400] transition-all"
+            className="text-base text-white font-mono bg-black/30 border border-3 border-white rounded-md hover:bg-yellow-[#e6c400] hover:text-yellow-400 hover:border-yellow-400 transition-all"
           >
             Explore Models
           </Button>
