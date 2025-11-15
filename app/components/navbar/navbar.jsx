@@ -22,7 +22,8 @@ export default function Navbar() {
   const id = useId();
 
   const topNavItems = [
-    { title: "Our Fleets", href: "/ourfleets" },
+    { title: "Models", href: "/models" },
+    { title: "Gallary", href: "/gallary" },
     { title: "About", href: "/about" },
     { title: "Contacts", href: "/contact" },
     { title: "Inquiry", href: "/inquiry" },
