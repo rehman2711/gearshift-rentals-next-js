@@ -2,10 +2,15 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence, scale } from "framer-motion";
-import { Button } from "@/components/retroui/Button";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Car } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function FeaturedBellows({ allCarsData = [] }) {
   const [openId, setOpenId] = useState(null);
+
+  const router = useRouter();
 
   return (
     <div className="fixed bottom-0 left-0 w-full h-[100vh] flex justify-end items-end bg-gradient-to-t from-gray-50/80 via-white/60 to-transparent backdrop-blur-lg overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
@@ -46,7 +51,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                 >
                   {/* Top: Name + Image */}
                   <div className="w-full flex flex-col items-center justify-center text-center space-y-4">
-                    <h3 className="text-4xl font-bold text-gray-900 pb-4 font-mono">
+                    <h3 className="text-4xl font-bold text-gray-900 mb-16 font-mono">
                       {car.cName}
                     </h3>
                     <div className="w-full rounded-2xl flex justify-center items-center overflow-hidden">
@@ -63,57 +68,75 @@ export default function FeaturedBellows({ allCarsData = [] }) {
 
                   {/* Description */}
                   <p className="text-gray-600 text-center max-w-2xl">
-                    Experience unmatched performance, luxurious comfort, and
-                    cutting-edge design with the {car.cName}. Built to redefine
-                    your drive.
+                    {car.cSlogan}
                   </p>
 
                   {/* Specs: labels + values */}
-                  <div className="w-full flex flex-col items-center justify-center gap-3">
+                  <div className="w-full flex items-center justify-center gap-5">
                     {/* Labels */}
-                    <div className="flex justify-center gap-10 text-gray-500 font-semibold uppercase tracking-wide text-sm">
-                      <span>Type</span>
-                      <span>Power</span>
-                      <span>Range</span>
-                      <span>Price</span>
-                    </div>
 
-                    {/* Values as badges */}
-                    <div className="flex justify-center gap-10">
-                      <span className="px-4 py-1 rounded-full bg-blue-100 text-blue-700 font-semibold text-sm">
-                        SUV
-                      </span>
-                      <span className="px-4 py-1 rounded-full bg-green-100 text-green-700 font-semibold text-sm">
-                        70000 hp
-                      </span>
-                      <span className="px-4 py-1 rounded-full bg-yellow-100 text-yellow-700 font-semibold text-sm">
-                        500 km
-                      </span>
-                      <span className="px-4 py-1 rounded-full bg-purple-100 text-purple-700 font-semibold text-sm">
-                        $70,000
-                      </span>
+                    <div className="flex flex-col justify-center items-center gap-2">
+                      <span className="text-gray-500 font-semibold uppercase tracking-wide text-xs">
+                        Type
+                      </span>{" "}
+                      <Badge className="py-1 px-4 bg-blue-500 hover:bg-blue-600">
+                        {car.cModel}
+                      </Badge>{" "}
+                    </div>
+                    <div className="flex flex-col justify-center items-center gap-2">
+                      <span className="text-gray-500 font-semibold uppercase tracking-wide text-xs">
+                        Brand
+                      </span>{" "}
+                      <Badge className="py-1 px-4 bg-green-400 hover:bg-green-500">
+                        {car.cBrand}
+                      </Badge>
+                    </div>
+                    <div className="flex flex-col justify-center items-center gap-2">
+                      <span className="text-gray-500 font-semibold uppercase tracking-wide text-xs">
+                        Range
+                      </span>{" "}
+                      <Badge className="py-1 px-4 bg-orange-400 hover:bg-orange-500">
+                        {car.mileage}
+                      </Badge>{" "}
+                    </div>
+                    <div className="flex flex-col justify-center items-center gap-2">
+                      <span className="text-gray-500 font-semibold uppercase tracking-wide text-xs">
+                        Price
+                      </span>{" "}
+                      <Badge className="py-1 px-4 bg-purple-500 hover:bg-purple-600">
+                        {car.cMoney}
+                      </Badge>{" "}
+                    </div>
+                    <div className="flex flex-col justify-center items-center gap-2">
+                      <span className="text-gray-500 font-semibold uppercase tracking-wide text-xs">
+                        Fuel
+                      </span>{" "}
+                      <Badge className="py-1 px-4 bg-violet-700 hover:bg-violet-800">
+                        {car.cFuel}
+                      </Badge>{" "}
                     </div>
                   </div>
 
                   {/* Buttons */}
                   <div className="flex justify-center items-center gap-5 pt-4">
                     <Button
-                      className="px-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 shadow-md"
+                      className="bg-green-500 hover:bg-green-600"
                       onClick={(e) => {
                         e.stopPropagation();
-                        alert("Explore clicked");
+                        alert(car.id)
+                        // router.push(`/models/${car.id}`);
                       }}
                     >
-                      Explore
+                      View Details
                     </Button>
                     <Button
-                      className="px-6 bg-gradient-to-r from-gray-700 to-gray-900 text-white hover:from-gray-800 hover:to-black shadow-md"
+                      className="bg-yellow-400 hover:bg-yellow-500"
                       onClick={(e) => {
                         e.stopPropagation();
                         alert("Compare clicked");
                       }}
                     >
-                      Compare
+                      Book Now
                     </Button>
                   </div>
                 </motion.div>

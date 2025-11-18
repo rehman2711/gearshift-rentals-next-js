@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import FeaturedCard from "@/app/components/FeaturedCard";
+import FeaturedCard from "./FeaturedCard";
 
 const Models = () => {
   const [data, setData] = useState([]);
