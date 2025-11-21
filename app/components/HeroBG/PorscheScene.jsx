@@ -100,6 +100,9 @@ export default function PorscheScene({
             variant="solid"
             size="sm"
             className="text-base text-black  bg-yellow-400 border border-3 border-slate-50 rounded-md hover:bg-yellow-[#e6c400] transition-all"
+            onClick={() => {
+              router.push("/book_now");
+            }}
           >
             Book Now
           </Button>
