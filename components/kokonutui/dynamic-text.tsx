@@ -12,6 +12,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { Settings } from "lucide-react";
 
 interface Greeting {
   text: string;
@@ -19,6 +20,13 @@ interface Greeting {
 }
 
 const greetings: Greeting[] = [
+  { text: "DRIVE", language: "English" },
+  { text: "WHAT", language: "English" },
+  { text: "YOU", language: "English" },
+  { text: "WANT", language: "English" },
+  { text: "WHEN", language: "English" },
+  { text: "YOU", language: "English" },
+  { text: "WANT", language: "English" },
   { text: "WELCOME", language: "English" },
   { text: "TO", language: "English" },
   { text: "GEARSHIFT", language: "English" },
@@ -43,7 +51,7 @@ const DynamicText = () => {
 
         return nextIndex;
       });
-    }, 1000);
+    }, 400);
 
     return () => clearInterval(interval);
   }, [isAnimating]);
@@ -77,9 +85,17 @@ const DynamicText = () => {
             </motion.div>
           </AnimatePresence>
         ) : (
-          <div className="flex items-center gap-2 text-7xl font-bold text-gray-800 dark:text-gray-200">
+          <div className="flex justify-center items-center text-2xl font-bold text-gray-800 dark:text-gray-200">
             <div aria-hidden="true" />
-            {greetings[currentIndex].text}
+
+            <Settings
+              size={256}
+              height={100}
+              className=""
+              style={{
+                animation: "spin 2s linear infinite",
+              }}
+            />
           </div>
         )}
       </div>
