@@ -97,7 +97,45 @@ const DetailCars = () => {
             </div>
 
             {/* Rent Card */}
-            <RentCard carData={carData} />
+            <div className="mt-10 bg-white/10 text-white p-8 rounded-3xl backdrop-blur-xl shadow-xl border border-white/10">
+              {/* Price */}
+              <div className="flex items-end gap-2">
+                <span className="text-xl opacity-80">{carData.cCurrency}</span>
+                <span className="text-5xl font-bold drop-shadow">
+                  {carData.cMoney}
+                </span>
+                <span className="text-xl opacity-80">/ {carData.cDay}</span>
+              </div>
+
+              <hr className="my-6 border-white/20" />
+
+              <h2 className="text-2xl font-semibold">Interested in Renting?</h2>
+
+              <div className="flex gap-4 mt-5">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl">
+                  Submit an Enquiry
+                </Button>
+
+                <Button
+                  className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-3 rounded-xl"
+                  onClick={() =>
+                    router.push(`/models/availability/${carData.id}/rent_now`)
+                  }
+                >
+                  Book Now
+                </Button>
+              </div>
+
+              <hr className="my-6 border-white/20" />
+
+              {/* Contact */}
+              <h2 className="text-xl font-semibold mb-4">Contact Us</h2>
+
+              <div className="space-y-3 text-white/90">
+                <ContactItem text="rehman@gearshift.com" />
+                <ContactItem text="+91 12345 12345" />
+              </div>
+            </div>
           </div>
 
           {/* RIGHT — Car Details */}
@@ -177,43 +215,6 @@ const FeatureItem = ({ text }) => (
   <div className="flex items-center gap-3 px-4 py-2 bg-white/5 rounded-xl text-white hover:bg-white/10 transition border border-white/5">
     <span className="text-lg">✔</span>
     <span>{text}</span>
-  </div>
-);
-
-/* ---------------- RENT CARD (New Design) ---------------- */
-
-const RentCard = ({ carData }) => (
-  <div className="mt-10 bg-white/10 text-white p-8 rounded-3xl backdrop-blur-xl shadow-xl border border-white/10">
-    {/* Price */}
-    <div className="flex items-end gap-2">
-      <span className="text-xl opacity-80">{carData.cCurrency}</span>
-      <span className="text-5xl font-bold drop-shadow">{carData.cMoney}</span>
-      <span className="text-xl opacity-80">/ {carData.cDay}</span>
-    </div>
-
-    <hr className="my-6 border-white/20" />
-
-    <h2 className="text-2xl font-semibold">Interested in Renting?</h2>
-
-    <div className="flex gap-4 mt-5">
-      <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl">
-        Submit an Enquiry
-      </Button>
-
-      <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-3 rounded-xl">
-        Book Now
-      </Button>
-    </div>
-
-    <hr className="my-6 border-white/20" />
-
-    {/* Contact */}
-    <h2 className="text-xl font-semibold mb-4">Contact Us</h2>
-
-    <div className="space-y-3 text-white/90">
-      <ContactItem text="rehman@gearshift.com" />
-      <ContactItem text="+91 12345 12345" />
-    </div>
   </div>
 );
 

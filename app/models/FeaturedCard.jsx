@@ -67,16 +67,16 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                   </div>
 
                   {/* Description */}
-                  <p className="text-gray-600 text-center max-w-2xl">
+                  <p className="text-black text-center max-w-2xl">
                     {car.cSlogan}
                   </p>
 
                   {/* Specs: labels + values */}
-                  <div className="w-full flex items-center justify-center gap-5">
+                  <div className="w-full flex items-center justify-center gap-5 text-black">
                     {/* Labels */}
 
                     <div className="flex flex-col justify-center items-center gap-2">
-                      <span className="text-gray-500 font-semibold uppercase tracking-wide text-xs">
+                      <span className="font-semibold uppercase tracking-wide text-xs">
                         Type
                       </span>{" "}
                       <Badge className="py-1 px-4 bg-blue-500 hover:bg-blue-600">
@@ -84,7 +84,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                       </Badge>{" "}
                     </div>
                     <div className="flex flex-col justify-center items-center gap-2">
-                      <span className="text-gray-500 font-semibold uppercase tracking-wide text-xs">
+                      <span className=" font-semibold uppercase tracking-wide text-xs">
                         Brand
                       </span>{" "}
                       <Badge className="py-1 px-4 bg-green-400 hover:bg-green-500">
@@ -92,7 +92,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                       </Badge>
                     </div>
                     <div className="flex flex-col justify-center items-center gap-2">
-                      <span className="text-gray-500 font-semibold uppercase tracking-wide text-xs">
+                      <span className=" font-semibold uppercase tracking-wide text-xs">
                         Range
                       </span>{" "}
                       <Badge className="py-1 px-4 bg-orange-400 hover:bg-orange-500">
@@ -100,7 +100,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                       </Badge>{" "}
                     </div>
                     <div className="flex flex-col justify-center items-center gap-2">
-                      <span className="text-gray-500 font-semibold uppercase tracking-wide text-xs">
+                      <span className=" font-semibold uppercase tracking-wide text-xs">
                         Price
                       </span>{" "}
                       <Badge className="py-1 px-4 bg-purple-500 hover:bg-purple-600">
@@ -108,7 +108,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                       </Badge>{" "}
                     </div>
                     <div className="flex flex-col justify-center items-center gap-2">
-                      <span className="text-gray-500 font-semibold uppercase tracking-wide text-xs">
+                      <span className=" font-semibold uppercase tracking-wide text-xs">
                         Fuel
                       </span>{" "}
                       <Badge className="py-1 px-4 bg-violet-700 hover:bg-violet-800">
