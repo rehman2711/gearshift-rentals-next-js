@@ -18,9 +18,10 @@ export default function CheckAvailability() {
   const fetchCar = async () => {
     try {
       const result = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/cars/${availability_id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/single-car/${availability_id}`
       );
-      setCarData(result.data);
+      // console.log(result.data[0]);
+      setCarData(result.data[0]);
     } catch (error) {
       console.log("Error fetching car:", error);
     } finally {
@@ -75,8 +76,10 @@ export default function CheckAvailability() {
           className="w-full h-full"
         >
           <Image
-            src={carData.cImg}
-            alt={carData.cName}
+            src={
+              process.env.NEXT_PUBLIC_IMAGE_PATH + "/" + carData.carImageMain
+            }
+            alt={carData.carName}
             fill
             className="object-cover"
           />
@@ -92,10 +95,10 @@ export default function CheckAvailability() {
             animate={{ y: 0, opacity: 1 }}
             className="text-4xl font-bold"
           >
-            {carData.cName}
+            {carData.carName}
           </motion.h1>
           <p className="text-lg opacity-90 mt-2">
-            {carData.cBrand} • {carData.cYear}
+            {carData.carBrandName} • {carData.carManufactureYear}
           </p>
         </div>
       </div>
@@ -104,12 +107,12 @@ export default function CheckAvailability() {
         {/* Quick Info Badges */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 text-center">
           {[
-            { label: "Mileage", value: carData.mileage },
-            { label: "Fuel", value: carData.cFuel },
-            { label: "Seats", value: carData.person },
-            { label: "Type", value: carData.type },
-            { label: "Model", value: carData.cModel },
-            { label: "Year", value: carData.cYear },
+            { label: "Mileage", value: carData.carMileage },
+            { label: "Fuel", value: carData.carFuelType },
+            { label: "Seats", value: carData.carSeatingCapacity },
+            { label: "Gear System", value: carData.carGearSystem },
+            { label: "Model", value: carData.carModelName },
+            { label: "Year", value: carData.carManufactureYear },
           ].map((item, i) => (
             <motion.div
               key={i}
@@ -131,18 +134,22 @@ export default function CheckAvailability() {
             animate={{ opacity: 1 }}
             className="text-2xl font-bold text-gray-900"
           >
-            {carData.cSlogan}
+            {carData.carSlogan}
           </motion.h2>
         </div>
 
         {/* DESCRIPTION */}
         <div className="mt-6 max-w-4xl mx-auto text-gray-700 text-lg text-center">
-          {carData.cText}
+          {carData.carDescription}
         </div>
 
         {/* IMAGE GALLERY */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-14">
-          {[carData.img1, carData.img2, carData.img3].map((img, i) => (
+          {[
+            carData.carImageSub1,
+            carData.carImageSub2,
+            carData.carImageSub3,
+          ].map((img, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, scale: 0.95 }}
@@ -151,7 +158,7 @@ export default function CheckAvailability() {
               className="w-full h-56 relative"
             >
               <Image
-                src={img}
+                src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${img}`}
                 alt={`Gallery ${i}`}
                 fill
                 className="object-cover rounded-xl shadow-md"
@@ -164,23 +171,23 @@ export default function CheckAvailability() {
         <div className="mt-16 text-center">
           <span
             className={`px-4 py-2 rounded-full text-base font-semibold ${
-              carData.cStatus === "Available"
+              carData.carStatus === "Available"
                 ? "bg-green-100 text-green-700"
                 : "bg-red-100 text-red-700"
             }`}
           >
-            {carData.cStatus}
+            {carData.carStatus}
           </span>
         </div>
 
         {/* PRICE */}
         <div className="text-center mt-6 text-3xl font-bold text-gray-900">
-          {carData.cCurrency} {carData.cMoney} / {carData.cDay}
+          {carData.carCurrency} {carData.carRent} / Day
         </div>
 
         {/* CTA BUTTON */}
         <div className="text-center mt-10">
-          {carData.cStatus === "Available" ? (
+          {carData.carStatus === "true" ? (
             <Button
               onClick={() =>
                 router.push(`/models/availability/${carData.id}/rent_now`)

@@ -33,7 +33,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
             {!isOpen && (
               <div className="absolute inset-0 flex justify-center items-center bg-white/40 border border-gray-200/40 hover:bg-white/70 transition-all duration-500 rounded-2xl">
                 <p className="text-gray-800 font-extrabold text-3xl rotate-90 whitespace-nowrap tracking-[4]">
-                  {car.cName}
+                  {car.carName}
                 </p>
               </div>
             )}
@@ -52,12 +52,12 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                   {/* Top: Name + Image */}
                   <div className="w-full flex flex-col items-center justify-center text-center space-y-4">
                     <h3 className="text-4xl font-bold text-gray-900 mb-16">
-                      {car.cName}
+                      {car.carName}
                     </h3>
                     <div className="w-full rounded-2xl flex justify-center items-center overflow-hidden">
                       <motion.img
-                        src={car.cImg}
-                        alt={car.cName}
+                        src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${car.carImageMain}`}
+                        alt={car.carName}
                         className="w-full max-w-md h-56 object-cover rounded-xl shadow-md hover:scale-200 transition-transform duration-500"
                         initial={{ scale: 0.95 }}
                         animate={{ scale: 1 }}
@@ -68,7 +68,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
 
                   {/* Description */}
                   <p className="text-black text-center max-w-2xl">
-                    {car.cSlogan}
+                    {car.carSlogan}
                   </p>
 
                   {/* Specs: labels + values */}
@@ -80,7 +80,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                         Type
                       </span>{" "}
                       <Badge className="py-1 px-4 bg-blue-500 hover:bg-blue-600">
-                        {car.cModel}
+                        {car.carModelName}
                       </Badge>{" "}
                     </div>
                     <div className="flex flex-col justify-center items-center gap-2">
@@ -88,7 +88,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                         Brand
                       </span>{" "}
                       <Badge className="py-1 px-4 bg-green-400 hover:bg-green-500">
-                        {car.cBrand}
+                        {car.carBrandName}
                       </Badge>
                     </div>
                     <div className="flex flex-col justify-center items-center gap-2">
@@ -96,7 +96,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                         Range
                       </span>{" "}
                       <Badge className="py-1 px-4 bg-orange-400 hover:bg-orange-500">
-                        {car.mileage}
+                        {car.carMileage}
                       </Badge>{" "}
                     </div>
                     <div className="flex flex-col justify-center items-center gap-2">
@@ -104,7 +104,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                         Price
                       </span>{" "}
                       <Badge className="py-1 px-4 bg-purple-500 hover:bg-purple-600">
-                        {car.cMoney}
+                        {car.carRent}
                       </Badge>{" "}
                     </div>
                     <div className="flex flex-col justify-center items-center gap-2">
@@ -112,7 +112,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                         Fuel
                       </span>{" "}
                       <Badge className="py-1 px-4 bg-violet-700 hover:bg-violet-800">
-                        {car.cFuel}
+                        {car.carFuelType}
                       </Badge>{" "}
                     </div>
                   </div>

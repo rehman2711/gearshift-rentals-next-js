@@ -21,9 +21,10 @@ const DetailCars = () => {
     const fetchData = async () => {
       try {
         const result = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/cars/${id}`
+          `${process.env.NEXT_PUBLIC_API_URL}/single-car/${id}`
         );
-        setCarData(result.data);
+        // console.log(result.data[0]);
+        setCarData(result.data[0]);
         setSelectedImg(result.data.cImg);
       } catch (error) {
         console.log("Error fetching car details:", error);
@@ -36,7 +37,7 @@ const DetailCars = () => {
 
   if (loading) return <SkeletonUI />;
 
-  if (!carData?.cName)
+  if (!carData?.carName)
     return (
       <div className="text-center text-white text-2xl mt-40">
         ❌ Car not found
@@ -69,27 +70,42 @@ const DetailCars = () => {
           <div>
             <div className="rounded-3xl overflow-hidden shadow-2xl bg-black/40 p-3 backdrop-blur-xl border border-white/10">
               <img
-                src={selectedImg}
+                src={
+                  selectedImg ||
+                  process.env.NEXT_PUBLIC_IMAGE_PATH +
+                    "/" +
+                    carData.carImageMain
+                }
                 className="w-full rounded-2xl object-contain h-[430px]"
               />
             </div>
 
             <div className="mt-5 grid grid-cols-4 gap-4">
-              {[carData.cImg, carData.img1, carData.img2, carData.img3]
+              {[
+                carData.carImageMain,
+                carData.carImageSub1,
+                carData.carImageSub2,
+                carData.carImageSub3,
+              ]
                 .filter(Boolean)
                 .map((src, i) => (
                   <button
                     key={i}
-                    onClick={() => setSelectedImg(src)}
+                    onClick={() =>
+                      setSelectedImg(
+                        process.env.NEXT_PUBLIC_IMAGE_PATH + "/" + src
+                      )
+                    }
                     className={`p-1 rounded-xl bg-white/10 backdrop-blur-md border transition 
                       ${
-                        selectedImg === src
+                        selectedImg ===
+                        process.env.NEXT_PUBLIC_IMAGE_PATH + "/" + src
                           ? "border-yellow-400"
                           : "border-transparent hover:border-white/30"
                       }`}
                   >
                     <img
-                      src={src}
+                      src={process.env.NEXT_PUBLIC_IMAGE_PATH + "/" + src}
                       className="w-full h-[85px] object-cover rounded-lg"
                     />
                   </button>
@@ -100,9 +116,9 @@ const DetailCars = () => {
             <div className="mt-10 bg-white/10 text-white p-8 rounded-3xl backdrop-blur-xl shadow-xl border border-white/10">
               {/* Price */}
               <div className="flex items-end gap-2">
-                <span className="text-xl opacity-80">{carData.cCurrency}</span>
+                <span className="text-xl opacity-80">{carData.carCurrency}</span>
                 <span className="text-5xl font-bold drop-shadow">
-                  {carData.cMoney}
+                  {carData.carRent}
                 </span>
                 <span className="text-xl opacity-80">/ {carData.cDay}</span>
               </div>
@@ -146,12 +162,12 @@ const DetailCars = () => {
 
             {/* Quick Tags */}
             <div className="flex flex-wrap gap-3 mt-8">
-              <InfoTag icon="⚡" label={carData.mileage} />
-              <InfoTag icon="⚙️" label={carData.type} />
-              <InfoTag icon="🧍" label={carData.person} />
-              <InfoTag icon="🧳" label={carData.bags} />
-              <InfoTag icon="📅" label={carData.cYear} />
-              <InfoTag icon="🚘" label={carData.cModel} />
+              <InfoTag icon="⚡" label={carData.carMileage} />
+              <InfoTag icon="⚙️" label={carData.carGearSystem} />
+              <InfoTag icon="🧍" label={carData.carSeatingCapacity} />
+              <InfoTag icon="🧳" label={carData.carStorageCapacity} />
+              <InfoTag icon="📅" label={carData.carManufactureYear} />
+              <InfoTag icon="🚘" label={carData.carBrandName} />
             </div>
 
             {/* Description */}
@@ -162,14 +178,14 @@ const DetailCars = () => {
             {/* Specifications */}
             <SectionHeader title="Specifications" />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-              <Spec label="Fuel Type" value={carData.cFuel} />
-              <Spec label="Mileage" value={carData.mileage} />
-              <Spec label="Transmission" value={carData.type} />
-              <Spec label="Seats" value={carData.person} />
-              <Spec label="Baggage" value={carData.bags} />
-              <Spec label="Year" value={carData.cYear} />
-              <Spec label="Type" value={carData.cModel} />
-              <Spec label="Brand" value={carData.cBrand} />
+              <Spec label="Fuel Type" value={carData.carFuelType} />
+              <Spec label="Mileage" value={carData.carMileage} />
+              <Spec label="Gear System" value={carData.carGearSystem} />
+              <Spec label="Seats" value={carData.carSeatingCapacity} />
+              <Spec label="Storage" value={carData.carStorageCapacity} />
+              <Spec label="Manufacture Year" value={carData.carManufactureYear} />
+              <Spec label="Model" value={carData.carModelName} />
+              <Spec label="Brand" value={carData.carBrandName} />
             </div>
 
             {/* Features */}

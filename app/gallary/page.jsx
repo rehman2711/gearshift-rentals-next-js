@@ -5,21 +5,22 @@ import axios from "axios";
 
 const Gallary = () => {
   const [fetchedData, setFetchedData] = useState([]);
-  const [images, setImages] = useState([]); // FIX 1 → must be an ARRAY
+  const [images, setImages] = useState([]); //
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
         const imageResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/cars`
+          `${process.env.NEXT_PUBLIC_API_URL}/all-cars`
         );
 
         setFetchedData(imageResponse.data);
+        console.log(imageResponse.data);
 
-        // FIX 2 → convert API data to array of image objects
+        //  2 → convert API data to array of image objects
         const formattedImages = imageResponse.data.map((item, index) => ({
-          src: item.cImg,
-          alt: `car-${index}`,
+          src: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${item.carImageMain}`,
+          alt: `car-${item.carName}`,
         }));
 
         setImages(formattedImages);
@@ -31,9 +32,11 @@ const Gallary = () => {
     fetchImages();
   }, []);
 
+  console.log(images);
+
   return (
     <div className="mx-auto" style={{ width: "100vw", height: "91.5vh" }}>
-      <DomeGallery images={images} /> {/* FIX 3 → now receives ARRAY */}
+      <DomeGallery images={images} /> {/*  3 → now receives ARRAY */}
     </div>
   );
 };

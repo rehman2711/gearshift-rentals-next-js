@@ -6,7 +6,7 @@ const WebhookTrigger = () => {
   const fetchCarsData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/cars`
+        `${process.env.NEXT_PUBLIC_API_URL}/all-cars`
       );
       console.log("Cars data:", response.data);
     } catch (error) {

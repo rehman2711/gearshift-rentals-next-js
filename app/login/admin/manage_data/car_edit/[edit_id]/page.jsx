@@ -3,35 +3,43 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const AdminCarEdit = () => {
   const { edit_id } = useParams();
   const router = useRouter();
 
   const [carInfo, setCarInfo] = useState({
-    cId: "",
-    cName: "",
-    cImg: null,
-    cText: "",
-    cCurrency: "",
-    cMoney: "",
-    cDay: "",
-    cYear: "",
-    cModel: "",
-    cBrand: "",
-    cButton: "See Full Details",
-    img1: null,
-    img2: null,
-    img3: null,
-    mileage: "",
-    type: "",
-    person: "",
-    bags: "",
-    buttonEdit: "Edit",
-    buttonDelete: "Delete",
+    carName: "",
+    carBrandName: "",
+    carModelName: "",
+    carSlogan: "",
+    carDescription: "",
+    carCurrency: "",
+    carFuelType: "",
+    carGearSystem: "",
+    carManufactureYear: "",
+    carMileage: "",
+    carRent: "",
+    carSeatingCapacity: "",
+    carStorageCapacity: "",
+    carImageMain: "",
+    carImageSub1: "",
+    carImageSub2: "",
+    carImageSub3: "",
+    carStatus: "",
+    carAvailableDate: "",
   });
 
-  // ======================
+  const [preview, setPreview] = useState({
+    carImageMain: "",
+    carImageSub1: "",
+    carImageSub2: "",
+    carImageSub3: "",
+  });
+
   // FETCH CAR DATA
   useEffect(() => {
     const fetchData = async () => {
@@ -39,286 +47,200 @@ const AdminCarEdit = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/cars/${edit_id}`
       );
 
-      setCarInfo({ ...res.data });
+      setCarInfo(res.data);
+
+      setPreview({
+        carImageMain: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${res.data.carImageMain}`,
+        carImageSub1: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${res.data.carImageSub1}`,
+        carImageSub2: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${res.data.carImageSub2}`,
+        carImageSub3: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${res.data.carImageSub3}`,
+      });
     };
 
     fetchData();
   }, [edit_id]);
 
-  // HANDLE INPUT
+  // HANDLE INPUTS
   const updateValue = (e) => {
     const { name, value, files } = e.target;
 
-    setCarInfo({
-      ...carInfo,
-      [name]: files ? URL.createObjectURL(files[0]) : value,
-    });
+    if (files) {
+      setCarInfo((prev) => ({ ...prev, [name]: files[0] }));
+      setPreview((prev) => ({
+        ...prev,
+        [name]: URL.createObjectURL(files[0]),
+      }));
+    } else {
+      setCarInfo((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
-  // UPDATE & REDIRECT
+  // SUBMIT FORM
   const updateInformation = async (e) => {
     e.preventDefault();
 
+    const fd = new FormData();
+    Object.entries(carInfo).forEach(([k, v]) => fd.append(k, v));
+
     await axios.patch(
       `${process.env.NEXT_PUBLIC_API_URL}/cars/${edit_id}`,
-      carInfo
+      fd,
+      { headers: { "Content-Type": "multipart/form-data" } }
     );
 
     router.push("/login/admin/manage_data");
   };
 
   return (
-    <>
-      <form onSubmit={updateInformation}>
-        <div className="bg-yellow-500 my-5 rounded-xl">
-          <h1 className="text-white py-6 text-center text-4xl font-extrabold">
-            CAR INFORMATION FORM
-          </h1>
-        </div>
+    <form onSubmit={updateInformation}>
+      <div className="bg-yellow-500 my-5 rounded-xl">
+        <h1 className="text-white py-6 text-center text-4xl font-extrabold">
+          EDIT CAR INFORMATION
+        </h1>
+      </div>
 
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-12 gap-4 font-semibold">
-            <h2 className="col-span-12 text-2xl mt-4 mb-2">
-              Basic Car Information
-            </h2>
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-12 gap-4 font-semibold">
 
-            {/* Car ID */}
-            <div className="col-span-12 md:col-span-2">
-              <label className="block mb-1">Car ID</label>
-              <input
-                type="text"
-                name="cId"
-                value={carInfo.cId}
-                onChange={updateValue}
-                className="w-full border rounded-lg p-2"
-              />
-            </div>
+          {/* BASIC INFO */}
+          <h2 className="col-span-12 text-2xl mt-4 mb-2">
+            Basic Car Information
+          </h2>
 
-            {/* Car Name */}
-            <div className="col-span-12 md:col-span-10">
-              <label className="block mb-1">Car Name</label>
-              <input
-                type="text"
-                name="cName"
-                value={carInfo.cName}
-                onChange={updateValue}
-                className="w-full border rounded-lg p-2"
-              />
-            </div>
+          <div className="col-span-12 md:col-span-4">
+            <Label>Car Name</Label>
+            <Input name="carName" value={carInfo.carName} onChange={updateValue} />
+          </div>
 
-            {/* Model / Brand */}
-            <div className="col-span-12 md:col-span-6">
-              <label className="block mb-1">Car Model</label>
-              <input
-                type="text"
-                name="cModel"
-                value={carInfo.cModel}
-                onChange={updateValue}
-                className="w-full border rounded-lg p-2"
-              />
-            </div>
+          <div className="col-span-12 md:col-span-4">
+            <Label>Brand</Label>
+            <Input name="carBrandName" value={carInfo.carBrandName} onChange={updateValue} />
+          </div>
 
-            <div className="col-span-12 md:col-span-6">
-              <label className="block mb-1">Car Brand</label>
-              <input
-                type="text"
-                name="cBrand"
-                value={carInfo.cBrand}
-                onChange={updateValue}
-                className="w-full border rounded-lg p-2"
-              />
-            </div>
+          <div className="col-span-12 md:col-span-4">
+            <Label>Model</Label>
+            <Input name="carModelName" value={carInfo.carModelName} onChange={updateValue} />
+          </div>
 
-            {/* Car Image */}
-            <div className="col-span-12 md:col-span-6">
-              <label className="block mb-1">Car Image</label>
-              <input
-                type="file"
-                name="cImg"
-                onChange={updateValue}
-                className="w-full border rounded-lg p-2"
-              />
+          <div className="col-span-12 md:col-span-6">
+            <Label>Slogan</Label>
+            <Input name="carSlogan" value={carInfo.carSlogan} onChange={updateValue} />
+          </div>
 
-              {carInfo.cImg && (
-                <details className="mt-2 cursor-pointer">
-                  <summary>Show Car Image</summary>
-                  <img
-                    src={carInfo.cImg}
-                    className="mt-3 rounded-lg"
-                    alt="Car"
-                  />
-                </details>
+          <div className="col-span-12 md:col-span-6">
+            <Label>Manufacture Year</Label>
+            <Input name="carManufactureYear" value={carInfo.carManufactureYear} onChange={updateValue} />
+          </div>
+
+          <div className="col-span-12">
+            <Label>Description</Label>
+            <textarea
+              name="carDescription"
+              value={carInfo.carDescription}
+              onChange={updateValue}
+              className="border rounded p-2 w-full h-32"
+            />
+          </div>
+
+          {/* STATUS */}
+          <div className="col-span-12 md:col-span-4">
+            <Label>Status</Label>
+            <select
+              name="carStatus"
+              value={carInfo.carStatus}
+              onChange={updateValue}
+              className="border rounded w-full p-2"
+            >
+              <option value="">Select Status</option>
+              <option value="Available">Available</option>
+              <option value="Not Available">Not Available</option>
+            </select>
+          </div>
+
+          <div className="col-span-12 md:col-span-4">
+            <Label>Available Date</Label>
+            <Input type="date" name="carAvailableDate" value={carInfo.carAvailableDate} onChange={updateValue} />
+          </div>
+
+          {/* PRICING */}
+          <h2 className="col-span-12 text-2xl mt-6 mb-2">Pricing</h2>
+
+          <div className="col-span-12 md:col-span-4">
+            <Label>Currency</Label>
+            <select name="carCurrency" value={carInfo.carCurrency} onChange={updateValue} className="border rounded p-2 w-full">
+              <option value="">Select</option>
+              <option value="RUPEES">RUPEES</option>
+              <option value="USD">USD</option>
+              <option value="AED">AED</option>
+            </select>
+          </div>
+
+          <div className="col-span-12 md:col-span-4">
+            <Label>Car Rent</Label>
+            <Input type="number" name="carRent" value={carInfo.carRent} onChange={updateValue} />
+          </div>
+
+          {/* CAR FEATURES */}
+          <h2 className="col-span-12 text-2xl mt-6 mb-2">Car Features</h2>
+
+          <div className="col-span-12 md:col-span-3">
+            <Label>Mileage</Label>
+            <Input name="carMileage" value={carInfo.carMileage} onChange={updateValue} />
+          </div>
+
+          <div className="col-span-12 md:col-span-3">
+            <Label>Gear System</Label>
+            <Input name="carGearSystem" value={carInfo.carGearSystem} onChange={updateValue} />
+          </div>
+
+          <div className="col-span-12 md:col-span-3">
+            <Label>Seating Capacity</Label>
+            <Input name="carSeatingCapacity" value={carInfo.carSeatingCapacity} onChange={updateValue} />
+          </div>
+
+          <div className="col-span-12 md:col-span-3">
+            <Label>Storage Capacity</Label>
+            <Input name="carStorageCapacity" value={carInfo.carStorageCapacity} onChange={updateValue} />
+          </div>
+
+          {/* IMAGES */}
+          <h2 className="col-span-12 text-2xl mt-6 mb-2">Car Images</h2>
+
+          {/* MAIN IMAGE */}
+          <div className="col-span-12 md:col-span-6">
+            <Label>Main Image</Label>
+            <Input type="file" name="carImageMain" onChange={updateValue} />
+
+            {preview.carImageMain && (
+              <img src={preview.carImageMain} className="mt-3 rounded-lg" width="200" />
+            )}
+          </div>
+
+          {/* OTHER IMAGES */}
+          {["carImageSub1", "carImageSub2", "carImageSub3"].map((key, i) => (
+            <div key={key} className="col-span-12 md:col-span-4">
+              <Label>Image {i + 1}</Label>
+              <Input type="file" name={key} onChange={updateValue} />
+
+              {preview[key] && (
+                <img src={preview[key]} className="mt-3 rounded-lg" width="200" />
               )}
             </div>
+          ))}
 
-            {/* Description */}
-            <div className="col-span-12 md:col-span-6">
-              <label className="block mb-1">Car Description</label>
-              <textarea
-                name="cText"
-                value={carInfo.cText}
-                onChange={updateValue}
-                className="w-full border rounded-lg p-2 h-32"
-              />
-            </div>
-
-            {/* Currency */}
-            <div className="col-span-12 md:col-span-3">
-              <label className="block mb-1">Currency</label>
-              <select
-                name="cCurrency"
-                value={carInfo.cCurrency}
-                onChange={updateValue}
-                className="w-full border rounded-lg p-2"
-              >
-                <option value="select">_SELECT_</option>
-                <option value="RUPEES">RUPEES</option>
-                <option value="US DOLLAR">US DOLLAR</option>
-                <option value="AED">AED</option>
-                <option value="POUNDS">POUNDS</option>
-                <option value="DIRAM">DIRAM</option>
-              </select>
-            </div>
-
-            {/* Money */}
-            <div className="col-span-12 md:col-span-3">
-              <label className="block mb-1">Amount</label>
-              <input
-                type="number"
-                name="cMoney"
-                value={carInfo.cMoney}
-                onChange={updateValue}
-                step="2000"
-                min="0"
-                className="w-full border rounded-lg p-2"
-              />
-            </div>
-
-            {/* Day */}
-            <div className="col-span-12 md:col-span-3">
-              <label className="block mb-1">Tenure</label>
-              <select
-                name="cDay"
-                value={carInfo.cDay}
-                onChange={updateValue}
-                className="w-full border rounded-lg p-2"
-              >
-                <option value="select">_SELECT_</option>
-                <option value="DAY">/ DAY</option>
-                <option value="WEEK">/ WEEK</option>
-                <option value="MONTH">/ MONTH</option>
-                <option value="YEAR">/ YEAR</option>
-              </select>
-            </div>
-
-            {/* Year */}
-            <div className="col-span-12 md:col-span-3">
-              <label className="block mb-1">Buying Year</label>
-              <input
-                type="month"
-                name="cYear"
-                value={carInfo.cYear}
-                onChange={updateValue}
-                className="w-full border rounded-lg p-2"
-              />
-            </div>
-
-            <div className="col-span-12 my-4">
-              <hr />
-            </div>
-
-            {/* OTHER IMAGES */}
-            <h2 className="col-span-12 text-2xl mt-4 mb-2">Car Other Images</h2>
-
-            {["img1", "img2", "img3"].map((img, i) => (
-              <div key={i} className="col-span-12 md:col-span-4">
-                <label className="block mb-1">Image {i + 1}</label>
-                <input
-                  type="file"
-                  name={img}
-                  onChange={updateValue}
-                  className="w-full border rounded-lg p-2"
-                />
-
-                {carInfo[img] && (
-                  <details className="mt-2 cursor-pointer">
-                    <summary>Show Image</summary>
-                    <img
-                      src={carInfo[img]}
-                      className="mt-3 rounded-lg"
-                      alt="Car Extra"
-                    />
-                  </details>
-                )}
-              </div>
-            ))}
-
-            <div className="col-span-12 my-4">
-              <hr />
-            </div>
-
-            {/* FEATURES */}
-            <h2 className="col-span-12 text-2xl mt-4 mb-2">Car Features</h2>
-
-            <div className="col-span-12 md:col-span-3">
-              <label className="block mb-1">Mileage</label>
-              <input
-                type="text"
-                name="mileage"
-                value={carInfo.mileage}
-                onChange={updateValue}
-                className="w-full border rounded-lg p-2"
-              />
-            </div>
-
-            <div className="col-span-12 md:col-span-3">
-              <label className="block mb-1">Car Type</label>
-              <select
-                name="type"
-                value={carInfo.type}
-                onChange={updateValue}
-                className="w-full border rounded-lg p-2"
-              >
-                <option value="none">_SELECT_</option>
-                <option value="Automatic">Automatic</option>
-                <option value="Manual">Manual</option>
-              </select>
-            </div>
-
-            <div className="col-span-12 md:col-span-3">
-              <label className="block mb-1">Person Capacity</label>
-              <input
-                type="number"
-                name="person"
-                value={carInfo.person}
-                onChange={updateValue}
-                className="w-full border rounded-lg p-2"
-              />
-            </div>
-
-            <div className="col-span-12 md:col-span-3">
-              <label className="block mb-1">Bags Capacity</label>
-              <input
-                type="number"
-                name="bags"
-                value={carInfo.bags}
-                onChange={updateValue}
-                className="w-full border rounded-lg p-2"
-              />
-            </div>
-
-            <div className="col-span-12 my-6 text-center">
-              <button
-                type="submit"
-                className="px-6 py-3 bg-yellow-500 text-black rounded-lg font-bold hover:bg-yellow-400"
-              >
-                Save Details
-              </button>
-            </div>
+          {/* SUBMIT */}
+          <div className="col-span-12 text-center mt-10 mb-6">
+            <Button
+              type="submit"
+              className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-3 rounded-lg font-bold"
+            >
+              Save Changes
+            </Button>
           </div>
+
         </div>
-      </form>
-    </>
+      </div>
+    </form>
   );
 };
 

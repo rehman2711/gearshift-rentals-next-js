@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
-import {Label } from "@/components/ui/label";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 const RentNow = () => {
@@ -22,8 +22,11 @@ const RentNow = () => {
 
   // Fetch cars
   const fetchCars = async () => {
-    const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/cars`);
+    const result = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/all-cars`
+    );
     setCars(result.data);
+    // console.log(result.data);
   };
 
   useEffect(() => {
@@ -36,7 +39,7 @@ const RentNow = () => {
 
     setCustomer({ ...customer, cName: value });
 
-    const carObj = cars.find((car) => car.cName === value);
+    const carObj = cars.find((car) => car.carName === value);
     setSelectedCar(carObj || null);
   };
 
@@ -79,7 +82,9 @@ const RentNow = () => {
           </h2>
 
           {/* NAME */}
-          <Label className="text-sm font-medium text-black px-1 mb-2 text-black px-1 mb-2">Customer Name</Label>
+          <Label className="text-sm font-medium text-black px-1 mb-2 text-black px-1 mb-2">
+            Customer Name
+          </Label>
           <Input
             type="text"
             name="name"
@@ -90,7 +95,9 @@ const RentNow = () => {
           />
 
           {/* MOBILE */}
-          <Label className="text-sm font-medium text-black px-1 mb-2">Mobile Number</Label>
+          <Label className="text-sm font-medium text-black px-1 mb-2">
+            Mobile Number
+          </Label>
           <Input
             type="number"
             name="mobile"
@@ -101,7 +108,9 @@ const RentNow = () => {
           />
 
           {/* EMAIL */}
-          <Label className="text-sm font-medium text-black px-1 mb-2">Email Address</Label>
+          <Label className="text-sm font-medium text-black px-1 mb-2">
+            Email Address
+          </Label>
           <Input
             type="email"
             name="email"
@@ -112,7 +121,9 @@ const RentNow = () => {
           />
 
           {/* GENDER */}
-          <Label className="text-sm font-medium text-black px-1 mb-2">Gender</Label>
+          <Label className="text-sm font-medium text-black px-1 mb-2">
+            Gender
+          </Label>
           <select
             name="gender"
             value={customer.gender}
@@ -125,7 +136,9 @@ const RentNow = () => {
           </select>
 
           {/* ADDRESS */}
-          <Label className="text-sm font-medium text-black px-1 mb-2">Residential Address</Label>
+          <Label className="text-sm font-medium text-black px-1 mb-2">
+            Residential Address
+          </Label>
           <Input
             type="text"
             name="address"
@@ -136,18 +149,24 @@ const RentNow = () => {
           />
 
           {/* LICENCE */}
-          <Label className="text-sm font-medium text-black px-1 mb-2">Driving Licence Number</Label>
+          <Label className="text-sm font-medium text-black px-1 mb-2">
+            Driving Licence Number
+          </Label>
           <Input
             type="text"
             name="licence"
+            pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}$"
             value={customer.licence}
             onChange={handleChange}
-            placeholder="27 DRF 2001"
-            className="mb-4"
+            placeholder="2ABCDE1234F"
+            className="mb-2"
           />
+          <p className="text-xs text-gray-400 ms-1 mb-3">Format: ABCDE1234F</p>
 
           {/* CAR SELECT */}
-          <Label className="text-sm font-medium text-black px-1 mb-2">Choose a Car</Label>
+          <Label className="text-sm font-medium text-black px-1 mb-2">
+            Choose a Car
+          </Label>
           <select
             name="cName"
             value={customer.cName}
@@ -156,8 +175,8 @@ const RentNow = () => {
           >
             <option value="">Select Car</option>
             {cars.map((car, index) => (
-              <option key={index} value={car.cName}>
-                {car.cName}
+              <option key={index} value={car.carName}>
+                {car.carName}
               </option>
             ))}
           </select>
@@ -177,18 +196,18 @@ const RentNow = () => {
             <>
               <h3 className="text-2xl font-semibold mb-3 text-black">
                 You Selected:
-                <span className="text-yellow-400"> {selectedCar.cName}</span>
+                <span className="text-yellow-400"> {selectedCar.carName}</span>
               </h3>
 
               <img
-                src={selectedCar.cImg}
+                src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${selectedCar.carImageMain}`}
                 alt="Selected Car"
                 className="w-full max-w-md rounded-2xl shadow-2xl border border-white/10"
               />
             </>
           ) : (
             <div className="opacity-40 text-lg text-black">
-              Select a car to preview ... 
+              Select a car to preview ...
             </div>
           )}
         </div>

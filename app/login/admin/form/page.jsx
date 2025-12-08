@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Container from "@/app/components/Container";
 
@@ -12,39 +12,33 @@ const FormCar = () => {
   const router = useRouter();
 
   const [carInfo, setCarInfo] = useState({
-    cId: "",
-    cName: "",
-    cSlogan: "",
-    cStatus: "",
-    cImg: null,
-    cText: "",
-    cCurrency: "",
-    cMoney: "",
-    cDay: "",
-    cYear: "",
-    cModel: "",
-    cBrand: "",
-    cButton: "See Full Details",
-    img1: null,
-    img2: null,
-    img3: null,
-    mileage: "",
-    type: "",
-    person: "",
-    bags: "",
-    buttonEdit: "Edit",
-    buttonDelete: "Delete",
-    cAvailability: "Check Availability",
+    carName: "",
+    carBrandName: "",
+    carModelName: "",
+    carSlogan: "",
+    carDescription: "",
+    carCurrency: "",
+    carFuelType: "",
+    carGearSystem: "",
+    carManufactureYear: "",
+    carMileage: "",
+    carRent: "",
+    carSeatingCapacity: "",
+    carStorageCapacity: "",
+    carImageMain: "",
+    carImageSub1: "",
+    carImageSub2: "",
+    carImageSub3: "",
+    carStatus: "",
+    carAvailableDate: "",
   });
 
   const updateValue = (e) => {
     const { name, value, files } = e.target;
-
-    if (files) {
-      setCarInfo({ ...carInfo, [name]: files[0] });
-    } else {
-      setCarInfo({ ...carInfo, [name]: value });
-    }
+    setCarInfo((prev) => ({
+      ...prev,
+      [name]: files ? files[0] : value,
+    }));
   };
 
   const submitForm = async (e) => {
@@ -57,220 +51,122 @@ const FormCar = () => {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
-    router.push("login/admin/managedata");
+    router.push("/login/admin/managedata");
   };
 
   return (
-    <>
     <Container>
-    <form onSubmit={submitForm} >
-      {/* Header */}
-       <div className="p-2 bg-yellow-400 flex justify-between items-center rounded-xl shadow-lg">
-        <h1 className="text-white text-3xl font-bold tracking-wide mx-auto">
-          CAR INFORMATION FORM
-        </h1>
-        <div><Button onClick={()=>{router.back()}} >Back</Button></div>
-      </div>
+      <form onSubmit={submitForm}>
+        <div className="p-2 bg-yellow-400 flex justify-between items-center rounded-xl shadow-lg">
+          <h1 className="text-white text-3xl font-bold mx-auto">
+            CAR INFORMATION FORM
+          </h1>
+          <Button onClick={() => router.back()}>Back</Button>
+        </div>
 
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Basic Car Info */}
-        <h2 className="text-xl font-bold my-4">Basic Car Information</h2>
+        <div className="max-w-7xl mx-auto px-6">
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Input
-            type="text"
-            name="cId"
-            placeholder="Car ID"
-            value={carInfo.cId}
-            onChange={updateValue}
-            className="border rounded p-3 w-full"
-          />
+          {/* BASIC DETAILS */}
+          <h2 className="text-xl font-bold my-4">Basic Car Information</h2>
 
-          <Input
-            type="text"
-            name="cName"
-            placeholder="Car Name"
-            value={carInfo.cName}
-            onChange={updateValue}
-            className="border rounded p-3 w-full"
-          />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-          <Input
-            type="text"
-            name="cSlogan"
-            placeholder="Car Slogan"
-            value={carInfo.cSlogan}
-            onChange={updateValue}
-            className="border rounded p-3 w-full"
-          />
+            <Input name="carName" placeholder="Car Name"
+              value={carInfo.carName} onChange={updateValue} />
 
-          <Input
-            type="text"
-            name="cModel"
-            placeholder="Car Model"
-            value={carInfo.cModel}
-            onChange={updateValue}
-            className="border rounded p-3 w-full"
-          />
+            <Input name="carBrandName" placeholder="Car Brand"
+              value={carInfo.carBrandName} onChange={updateValue} />
 
-          <Input
-            type="text"
-            name="cBrand"
-            placeholder="Car Brand"
-            value={carInfo.cBrand}
-            onChange={updateValue}
-            className="border rounded p-3 w-full"
-          />
+            <Input name="carModelName" placeholder="Car Model"
+              value={carInfo.carModelName} onChange={updateValue} />
 
-          <select
-            name="cStatus"
-            value={carInfo.cStatus}
-            onChange={updateValue}
-            className="border rounded p-3 w-full"
-          >
-            <option value="None">Select Status</option>
-            <option value="Available">Available</option>
-            <option value="Not Available">Not Available</option>
-          </select>
+            <Input name="carSlogan" placeholder="Car Slogan"
+              value={carInfo.carSlogan} onChange={updateValue} />
 
-          {/* Car Image */}
-          <div className="md:col-span-1">
-            <Label className="font-semibold">Car Image</Label>
-            <Input
-              type="file"
-              name="cImg"
+            <Input name="carManufactureYear" placeholder="Manufacture Year"
+              value={carInfo.carManufactureYear} onChange={updateValue} />
+
+            <select name="carStatus" value={carInfo.carStatus} onChange={updateValue}
+              className="border rounded p-3">
+              <option value="">Select Status</option>
+              <option value="Available">Available</option>
+              <option value="Not Available">Not Available</option>
+            </select>
+
+            <Input type="date" name="carAvailableDate"
+              value={carInfo.carAvailableDate}
               onChange={updateValue}
-              className="border p-3 w-full rounded"
+              className="border rounded p-3"
             />
-          </div>
 
-          <div className="md:col-span-2">
             <textarea
-              name="cText"
+              name="carDescription"
+              value={carInfo.carDescription}
               placeholder="Car Description"
-              value={carInfo.cText}
               onChange={updateValue}
-              className="border rounded p-3 w-full h-32"
+              className="border rounded p-3 w-full md:col-span-3 h-32"
             />
           </div>
+
+          {/* PRICING */}
+          <h2 className="text-xl font-bold mt-10 mb-4">Pricing</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+            <select name="carCurrency" value={carInfo.carCurrency} onChange={updateValue}
+              className="border rounded p-3">
+              <option value="">Select Currency</option>
+              <option value="RUPEES">RUPEES</option>
+              <option value="USD">USD</option>
+              <option value="AED">AED</option>
+            </select>
+
+            <Input type="number" name="carRent" placeholder="Rent Amount"
+              value={carInfo.carRent} onChange={updateValue} />
+
+          </div>
+
+          {/* FEATURES */}
+          <h2 className="text-xl font-bold mt-10 mb-4">Specifications</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+            <Input name="carMileage" placeholder="Mileage"
+              value={carInfo.carMileage} onChange={updateValue} />
+
+            <Input name="carGearSystem" placeholder="Gear System"
+              value={carInfo.carGearSystem} onChange={updateValue} />
+
+            <Input name="carSeatingCapacity" placeholder="Seating Capacity"
+              value={carInfo.carSeatingCapacity} onChange={updateValue} />
+
+            <Input name="carStorageCapacity" placeholder="Storage Capacity"
+              value={carInfo.carStorageCapacity} onChange={updateValue} />
+
+            <Input name="carFuelType" placeholder="Fuel Type"
+              value={carInfo.carFuelType} onChange={updateValue} />
+
+          </div>
+
+          {/* IMAGES */}
+          <h2 className="text-xl font-bold mt-10 mb-4">Car Images</h2>
+
+          <Label>Main Image</Label>
+          <Input type="file" name="carImageMain" onChange={updateValue} className="mb-3" />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Input type="file" name="carImageSub1" onChange={updateValue} />
+            <Input type="file" name="carImageSub2" onChange={updateValue} />
+            <Input type="file" name="carImageSub3" onChange={updateValue} />
+          </div>
+
+          <div className="text-center my-10">
+            <Button type="submit" className="bg-yellow-500 text-white px-6 py-3 rounded-lg text-lg font-semibold">
+              Submit Details
+            </Button>
+          </div>
+
         </div>
-
-        {/* Pricing */}
-        <h2 className="text-xl font-bold mt-10 mb-4">Pricing</h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <select
-            name="cCurrency"
-            value={carInfo.cCurrency}
-            onChange={updateValue}
-            className="border rounded p-3"
-          >
-            <option value="select">Select Currency</option>
-            <option value="RUPEES">RUPEES</option>
-            <option value="US DOLLAR">US DOLLAR</option>
-            <option value="AED">AED</option>
-            <option value="POUNDS">POUNDS</option>
-            <option value="DIRAM">DIRAM</option>
-          </select>
-
-          <Input
-            type="number"
-            name="cMoney"
-            placeholder="Amount"
-            value={carInfo.cMoney}
-            onChange={updateValue}
-            className="border rounded p-3"
-          />
-
-          <select
-            name="cDay"
-            value={carInfo.cDay}
-            onChange={updateValue}
-            className="border rounded p-3"
-          >
-            <option value="select">Tenure</option>
-            <option value="DAY">/ DAY</option>
-            <option value="WEEK">/ WEEK</option>
-            <option value="MONTH">/ MONTH</option>
-            <option value="YEAR">/ YEAR</option>
-          </select>
-
-          <Input
-            type="month"
-            name="cYear"
-            value={carInfo.cYear}
-            onChange={updateValue}
-            className="border rounded p-3"
-          />
-        </div>
-
-        {/* Car Images */}
-        <h2 className="text-xl font-bold mt-10 mb-4">Car Other Images</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[1, 2, 3].map((num) => (
-            <Input
-              key={num}
-              type="file"
-              name={`img${num}`}
-              onChange={updateValue}
-              className="border p-3 w-full rounded"
-            />
-          ))}
-        </div>
-
-        {/* Car Features */}
-        <h2 className="text-xl font-bold mt-10 mb-4">Car Features</h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Input
-            type="text"
-            name="mileage"
-            placeholder="Mileage"
-            value={carInfo.mileage}
-            onChange={updateValue}
-            className="border rounded p-3"
-          />
-
-          <select
-            name="type"
-            value={carInfo.type}
-            onChange={updateValue}
-            className="border rounded p-3"
-          >
-            <option value="none">Car Type</option>
-            <option value="Automatic">Automatic</option>
-            <option value="Manual">Manual</option>
-          </select>
-
-          <Input
-            type="number"
-            name="person"
-            placeholder="Person Capacity"
-            value={carInfo.person}
-            onChange={updateValue}
-            className="border rounded p-3"
-          />
-
-          <Input
-            type="number"
-            name="bags"
-            placeholder="Bags"
-            value={carInfo.bags}
-            onChange={updateValue}
-            className="border rounded p-3"
-          />
-        </div>
-
-        <div className="text-center my-10">
-          <Button
-            type="submit"
-            className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg text-lg font-semibold"
-          >
-            Submit Details
-          </Button>
-        </div>
-      </div>
-    </form>
+      </form>
     </Container>
-    </>
   );
 };
 

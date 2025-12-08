@@ -28,12 +28,13 @@ export default function RentTheCarNow() {
       try {
         if (!params?.availability_id) return;
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/cars/${params.availability_id}`
+          `${process.env.NEXT_PUBLIC_API_URL}/single-car/${params.availability_id}`
         );
-        setSelectedCar(res.data || null);
+        setSelectedCar(res.data[0] || null);
+        // console.log(res.data[0] || null);
 
         // prefills car name into customer object
-        setCustomer((prev) => ({ ...prev, cName: res.data?.cName || "" }));
+        setCustomer((prev) => ({ ...prev, carName: res.data?.carName || "" }));
       } catch (err) {
         console.error("Error fetching car:", err);
       }
@@ -51,7 +52,7 @@ export default function RentTheCarNow() {
       ...prev,
       [name]: value,
       image: "/images/form-images/defaultAvatar.jpg",
-      cName: selectedCar?.cName || prev.cName,
+      carName: selectedCar?.carName || prev.carName,
     }));
   };
 
@@ -149,11 +150,11 @@ export default function RentTheCarNow() {
                 name="licence"
                 value={customer.licence}
                 onChange={handleChange}
-                placeholder="27 DF 2001"
-                pattern="^\d{2} [A-Z]{3} \d{4}$"
+                placeholder="ABCDE1234F"
+                pattern="^[A-Z]{5}[0-9]{4}[A-Z]{1}$"
                 className="w-full mt-1 mb-4 px-3 py-2 bg-black/20 border border-white/20 rounded-lg outline-none focus:ring-2 focus:ring-yellow-400"
               />
-              <p className="text-xs text-gray-400">Format: 27 ABC 2001</p>
+              <p className="text-xs text-gray-400">Format: ABCDE1234F</p>
             </div>
 
             {/* Car name (read only) */}
@@ -161,7 +162,7 @@ export default function RentTheCarNow() {
               <label className="text-sm font-medium">Car Name</label>
               <input
                 name="cName"
-                value={selectedCar?.cName || ""}
+                value={selectedCar?.carName || ""}
                 readOnly
                 className="w-full mt-1 mb-4 px-3 py-2 bg-black/10 border border-white/10 rounded-lg text-gray-200"
               />
@@ -182,15 +183,19 @@ export default function RentTheCarNow() {
             <h3 className="text-2xl font-semibold mb-4">
               YOU CHOOSEN
               <span className="ml-2 text-yellow-400">
-                {selectedCar?.cName || " — "}
+                {selectedCar?.carName || " — "}
               </span>
             </h3>
 
-            {selectedCar?.cImg ? (
+            {selectedCar?.carImageMain ? (
               // use next/image if you move to an actual page file; keeping img for simplicity
               <img
-                src={selectedCar.cImg}
-                alt={selectedCar.cName}
+                src={
+                  process.env.NEXT_PUBLIC_IMAGE_PATH +
+                  "/" +
+                  selectedCar.carImageMain
+                }
+                alt={selectedCar.carName}
                 className="w-full max-w-md rounded-2xl shadow-2xl border border-white/10"
               />
             ) : (

@@ -22,11 +22,11 @@ export default function AdminLayout({ children }) {
   };
 
   return (
-    <div className="min-h-screen flex bg-gray-100">
+    <div className="min-h-screen flex bg-gray-50">
       {/* SIDEBAR */}
       <div
         className={`${
-          open ? "w-64" : "w-20"
+          open ? "w-60" : "w-20"
         } bg-white text-black transition-all duration-300 flex flex-col`}
       >
         {/* Sidebar Header */}
@@ -87,7 +87,7 @@ export default function AdminLayout({ children }) {
       </div>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 p-6">{children}</main>
+      <main className={`flex-1 ${open ? "pl-8" : "ml-0"} p-6 bg-red-50`}>{children}</main>
     </div>
   );
 }
