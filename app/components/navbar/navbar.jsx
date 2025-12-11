@@ -67,7 +67,7 @@ export default function Navbar() {
                     router.push("/login");
                   }}
                 >
-                  Login
+                  Login as Admin
                 </Button>
               )}
             {(path === "/login/admin" ||

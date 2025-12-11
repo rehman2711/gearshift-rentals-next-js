@@ -40,20 +40,23 @@ const AdminCarEdit = () => {
     carImageSub3: "",
   });
 
+  console.log(preview)
+
   // FETCH CAR DATA
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/cars/${edit_id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/single-car/${edit_id}`
       );
 
-      setCarInfo(res.data);
+      setCarInfo(res.data[0]);
+      console.log(res.data[0]);
 
       setPreview({
-        carImageMain: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${res.data.carImageMain}`,
-        carImageSub1: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${res.data.carImageSub1}`,
-        carImageSub2: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${res.data.carImageSub2}`,
-        carImageSub3: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${res.data.carImageSub3}`,
+        carImageMain: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${res.data[0].carImageMain}`,
+        carImageSub1: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${res.data[0].carImageSub1}`,
+        carImageSub2: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${res.data[0].carImageSub2}`,
+        carImageSub3: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${res.data[0].carImageSub3}`,
       });
     };
 
@@ -83,7 +86,7 @@ const AdminCarEdit = () => {
     Object.entries(carInfo).forEach(([k, v]) => fd.append(k, v));
 
     await axios.patch(
-      `${process.env.NEXT_PUBLIC_API_URL}/cars/${edit_id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/edit-car/${edit_id}`,
       fd,
       { headers: { "Content-Type": "multipart/form-data" } }
     );

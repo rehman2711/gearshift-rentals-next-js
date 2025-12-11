@@ -35,7 +35,7 @@ const AdminShowAll = () => {
     // Optimistic Update
     setCars((prev) => prev.filter((item) => item.id !== id));
 
-    await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/single-car/${id}`);
+    await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/delete-car/${id}`);
   };
 
   return (

@@ -116,7 +116,9 @@ const DetailCars = () => {
             <div className="mt-10 bg-white/10 text-white p-8 rounded-3xl backdrop-blur-xl shadow-xl border border-white/10">
               {/* Price */}
               <div className="flex items-end gap-2">
-                <span className="text-xl opacity-80">{carData.carCurrency}</span>
+                <span className="text-xl opacity-80">
+                  {carData.carCurrency}
+                </span>
                 <span className="text-5xl font-bold drop-shadow">
                   {carData.carRent}
                 </span>
@@ -132,14 +134,27 @@ const DetailCars = () => {
                   Submit an Enquiry
                 </Button>
 
-                <Button
-                  className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-3 rounded-xl"
-                  onClick={() =>
-                    router.push(`/models/availability/${carData.id}/rent_now`)
-                  }
-                >
-                  Book Now
-                </Button>
+                {carData.carStatus === "true" ? (
+                  <Button
+                    className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-3 rounded-xl"
+                    onClick={() =>
+                      router.push(`/models/availability/${carData.id}/rent_now`)
+                    }
+                  >
+                    Book Now
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() =>
+                      router.push(
+                        `/models/availability/${carData.id}/notify_me`
+                      )
+                    }
+                    className="bg-gray-700 text-white hover:bg-gray-800 transition"
+                  >
+                    Notify Me - Cause-Not-Available
+                  </Button>
+                )}
               </div>
 
               <hr className="my-6 border-white/20" />
@@ -183,7 +198,10 @@ const DetailCars = () => {
               <Spec label="Gear System" value={carData.carGearSystem} />
               <Spec label="Seats" value={carData.carSeatingCapacity} />
               <Spec label="Storage" value={carData.carStorageCapacity} />
-              <Spec label="Manufacture Year" value={carData.carManufactureYear} />
+              <Spec
+                label="Manufacture Year"
+                value={carData.carManufactureYear}
+              />
               <Spec label="Model" value={carData.carModelName} />
               <Spec label="Brand" value={carData.carBrandName} />
             </div>
