@@ -86,7 +86,7 @@ const AdminCarEdit = () => {
     Object.entries(carInfo).forEach(([k, v]) => fd.append(k, v));
 
     await axios.patch(
-      `${process.env.NEXT_PUBLIC_API_URL}/edit-car/${edit_id}`,
+      `http://localhost:4407/api/v1/edit-car/${edit_id}`,
       fd,
       { headers: { "Content-Type": "multipart/form-data" } }
     );

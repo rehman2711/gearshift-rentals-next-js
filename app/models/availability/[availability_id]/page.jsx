@@ -169,20 +169,22 @@ export default function CheckAvailability() {
 
         {/* AVAILABILITY STATUS */}
         <div className="mt-16 text-center">
-          <span
-            className={`px-4 py-2 rounded-full text-base font-semibold ${
-              carData.carStatus === "Available"
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-700"
-            }`}
-          >
-            {carData.carStatus}
-          </span>
-        </div>
+  <span
+    className={`px-4 py-2 rounded-full text-base font-semibold
+      ${
+        carData.carStatus === "true"
+          ? "bg-green-100 text-green-700"
+          : "bg-red-100 text-red-700"
+      }`}
+  >
+    {carData.carStatus === "true" ? "Available" : "Not Available"}
+  </span>
+</div>
+
 
         {/* PRICE */}
         <div className="text-center mt-6 text-3xl font-bold text-gray-900">
-          {carData.carCurrency} {carData.carRent} / Day
+          {carData.carCurrency} {carData.carRent}
         </div>
 
         {/* CTA BUTTON */}

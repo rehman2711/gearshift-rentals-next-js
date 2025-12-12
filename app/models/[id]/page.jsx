@@ -46,9 +46,7 @@ const DetailCars = () => {
   return (
     <>
       {/* Light Background */}
-      <div
-        className="fixed inset-0 z-0 min-h-screen bg-gradient-to-b from-white to-gray-100"
-      />
+      <div className="fixed inset-0 z-0 min-h-screen bg-gradient-to-b from-white to-gray-100" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 pt-14 pb-14">
         {/* Back button */}
@@ -117,7 +115,7 @@ const DetailCars = () => {
                 <span className="text-5xl font-bold text-gray-900">
                   {carData.carRent}
                 </span>
-                <span className="text-xl text-gray-500">/ {carData.cDay}</span>
+                <span className="text-xl text-gray-500">{carData.cDay}</span>
               </div>
 
               <hr className="my-6 border-gray-200" />
@@ -223,9 +221,7 @@ const DetailCars = () => {
 /* -------------------------------------------------- */
 
 const SectionHeader = ({ title }) => (
-  <h2 className="text-3xl font-semibold text-gray-900 mt-10 mb-3">
-    {title}
-  </h2>
+  <h2 className="text-3xl font-semibold text-gray-900 mt-10 mb-3">{title}</h2>
 );
 
 const InfoTag = ({ icon, label }) => (

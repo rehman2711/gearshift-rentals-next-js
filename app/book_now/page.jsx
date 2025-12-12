@@ -9,7 +9,6 @@ const RentNow = () => {
   const [cars, setCars] = useState([]);
   const [selectedCar, setSelectedCar] = useState(null);
 
-  // MATCHING FIRST COMPONENT FIELD NAMES
   const [customer, setCustomer] = useState({
     customerImage: null,
     customerName: "",
@@ -17,13 +16,12 @@ const RentNow = () => {
     customerEmail: "",
     customerGender: "",
     customerAddress: "",
-    customerPAN: "",                       // mapped from licence
-    customerChoosenCar: "",                // car ID
+    customerPAN: "",
+    customerChoosenCar: "",
     customerChoosenCarFrom: "",
     customerChoosenCarTo: "",
   });
 
-  // Fetch all cars
   const fetchCars = async () => {
     const result = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/all-cars`);
     setCars(result.data);
@@ -33,7 +31,6 @@ const RentNow = () => {
     fetchCars();
   }, []);
 
-  // When car changes → SET CAR ID (NOT carName)
   const handleCarChange = (e) => {
     const carId = e.target.value;
 
@@ -46,7 +43,6 @@ const RentNow = () => {
     setSelectedCar(foundCar || null);
   };
 
-  // Text / email / number / date changes
   const handleChange = (e) => {
     setCustomer({
       ...customer,
@@ -54,7 +50,6 @@ const RentNow = () => {
     });
   };
 
-  // File upload
   const handleFileChange = (e) => {
     const file = e.target.files?.[0] || null;
     setCustomer((prev) => ({
@@ -63,22 +58,16 @@ const RentNow = () => {
     }));
   };
 
-  // SUBMIT USING FORMDATA (MATCHING FIRST COMPONENT)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    for (let key in customer) {
-      formData.append(key, customer[key]);
-    }
+    for (let key in customer) formData.append(key, customer[key]);
 
-    await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/book-car`,
-      formData,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
+    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/book-car`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
 
-    // Reset form
     setCustomer({
       customerImage: null,
       customerName: "",
@@ -96,164 +85,183 @@ const RentNow = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-r from-[#ffd6ff] via-[#ffd6ff]/30 to-transparent backdrop-blur-lg py-12 px-4">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+    <div className="min-h-screen w-full bg-gradient-to-r from-[#ffd6ff] via-[#ffd6ff]/30 to-transparent backdrop-blur-lg py-10 px-4">
+      <div className="max-w-6xl mx-auto">
 
-        {/* --------------------- FORM --------------------- */}
         <form
           onSubmit={handleSubmit}
-          className="backdrop-blur-xl bg-white border border-white/10 p-8 rounded-2xl shadow-xl"
+          className="bg-white/60 backdrop-blur-xl border border-white/20 p-10 rounded-3xl shadow-2xl space-y-10"
         >
-          <h2 className="text-3xl font-bold text-center mb-6 text-yellow-400">
+          <h2 className="text-3xl font-bold text-center text-yellow-500 mb-6">
             Rent a Car — Premium Service
           </h2>
 
-          {/* NAME */}
-          <Label className="text-sm font-medium text-black px-1 mb-2">Customer Name</Label>
-          <Input
-            type="text"
-            name="customerName"
-            value={customer.customerName}
-            onChange={handleChange}
-            placeholder="Enter your name"
-            className="mb-4"
-          />
+          {/* ========================= SECTION 1: Personal Info ========================= */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* LEFT SIDE - PERSONAL DETAILS */}
+            <div className="space-y-6">
 
-          {/* MOBILE */}
-          <Label className="text-sm font-medium text-black px-1 mb-2">Mobile Number</Label>
-          <Input
-            type="number"
-            name="customerMobile"
-            value={customer.customerMobile}
-            onChange={handleChange}
-            placeholder="Enter your mobile number"
-            className="mb-4"
-          />
+              <div className="p-5 bg-white/70 rounded-xl shadow-lg space-y-4">
+                <h3 className="text-xl font-semibold text-black mb-2">Personal Details</h3>
 
-          {/* EMAIL */}
-          <Label className="text-sm font-medium text-black px-1 mb-2">Email Address</Label>
-          <Input
-            type="email"
-            name="customerEmail"
-            value={customer.customerEmail}
-            onChange={handleChange}
-            placeholder="Enter your email"
-            className="mb-4"
-          />
+                <div>
+                  <Label>Customer Name</Label>
+                  <Input
+                    type="text"
+                    name="customerName"
+                    value={customer.customerName}
+                    onChange={handleChange}
+                    placeholder="Enter your name"
+                  />
+                </div>
 
-          {/* GENDER */}
-          <Label className="text-sm font-medium text-black px-1 mb-2">Gender</Label>
-          <select
-            name="customerGender"
-            value={customer.customerGender}
-            onChange={handleChange}
-            className="w-full mt-1 mb-4 px-3 py-2 text-black border rounded-lg text-sm"
-          >
-            <option value="">Select</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
+                <div>
+                  <Label>Mobile Number</Label>
+                  <Input
+                    type="number"
+                    name="customerMobile"
+                    value={customer.customerMobile}
+                    onChange={handleChange}
+                    placeholder="Enter your number"
+                  />
+                </div>
 
-          {/* ADDRESS */}
-          <Label className="text-sm font-medium text-black px-1 mb-2">Residential Address</Label>
-          <Input
-            type="text"
-            name="customerAddress"
-            value={customer.customerAddress}
-            onChange={handleChange}
-            placeholder="Enter your address"
-            className="mb-4"
-          />
+                <div>
+                  <Label>Email</Label>
+                  <Input
+                    type="email"
+                    name="customerEmail"
+                    value={customer.customerEmail}
+                    onChange={handleChange}
+                    placeholder="Enter your email"
+                  />
+                </div>
 
-          {/* PAN (Mapped from Licence) */}
-          <Label className="text-sm font-medium text-black px-1 mb-2">PAN Card Number</Label>
-          <Input
-            type="text"
-            name="customerPAN"
-            value={customer.customerPAN}
-            onChange={handleChange}
-            placeholder="ABCDE1234F"
-            className="mb-4"
-          />
+                <div>
+                  <Label>Gender</Label>
+                  <select
+                    name="customerGender"
+                    value={customer.customerGender}
+                    onChange={handleChange}
+                    className="w-full mt-1 px-3 py-2 border rounded-lg text-sm"
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                </div>
 
-          {/* DATES */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label className="text-sm font-medium text-black px-1 mb-2">Choosing Car From</Label>
-              <Input
-                type="date"
-                name="customerChoosenCarFrom"
-                value={customer.customerChoosenCarFrom}
-                onChange={handleChange}
-                className="mb-4"
-              />
+                <div>
+                  <Label>Residential Address</Label>
+                  <Input
+                    type="text"
+                    name="customerAddress"
+                    value={customer.customerAddress}
+                    onChange={handleChange}
+                    placeholder="Enter Address"
+                  />
+                </div>
+
+                <div>
+                  <Label>PAN Card Number</Label>
+                  <Input
+                    type="text"
+                    name="customerPAN"
+                    value={customer.customerPAN}
+                    onChange={handleChange}
+                    placeholder="ABCDE1234F"
+                  />
+                </div>
+
+                <div>
+                  <Label>Upload Photo</Label>
+                  <Input type="file" name="customerImage" onChange={handleFileChange} />
+                </div>
+              </div>
             </div>
 
-            <div>
-              <Label className="text-sm font-medium text-black px-1 mb-2">Choosing Car To</Label>
-              <Input
-                type="date"
-                name="customerChoosenCarTo"
-                value={customer.customerChoosenCarTo}
-                onChange={handleChange}
-                className="mb-4"
-              />
+            {/* RIGHT SIDE — CAR PREVIEW (SCROLLABLE) */}
+            <div className="p-5 bg-white/70 rounded-xl shadow-lg">
+              <h3 className="text-xl font-semibold text-black mb-4">Car Preview</h3>
+
+              <div className="h-[420px] overflow-y-auto rounded-xl border p-4 bg-white shadow-inner">
+                {selectedCar ? (
+                  <>
+                    <h4 className="text-lg font-semibold mb-2">
+                      Selected: <span className="text-yellow-500">{selectedCar.carName}</span>
+                    </h4>
+
+                    <img
+                      src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${selectedCar.carImageMain}`}
+                      className="w-full rounded-xl shadow-lg mb-4"
+                      alt="Car"
+                    />
+
+                    <p className="text-sm text-gray-700">
+                      More details can be auto-filled here...
+                    </p>
+                  </>
+                ) : (
+                  <div className="text-center mt-10 opacity-50 text-black text-lg">
+                    Select a car to preview...
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* IMAGE UPLOAD */}
-          <Label className="text-sm font-medium text-black px-1 mb-2">Customer Photo</Label>
-          <Input
-            type="file"
-            name="customerImage"
-            onChange={handleFileChange}
-            className="mb-4"
-          />
+          {/* ========================= SECTION 2: Car Selection ========================= */}
+          <div className="p-6 bg-white/70 rounded-xl shadow-lg space-y-4">
+            <h3 className="text-xl font-semibold text-black">Car Booking Details</h3>
 
-          {/* CAR SELECT — NOW USING CAR ID */}
-          <Label className="text-sm font-medium text-black px-1 mb-2">Choose a Car</Label>
-          <select
-            name="customerChoosenCar"
-            value={customer.customerChoosenCar}
-            onChange={handleCarChange}
-            className="w-full mt-1 mb-4 px-3 py-2 text-black text-sm border rounded-lg"
-          >
-            <option value="">Select Car</option>
-            {cars.map((car) => (
-              <option key={car.id} value={car.carName}>
-                {car.carName}
-              </option>
-            ))}
-          </select>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <Label>Choose Car</Label>
+                <select
+                  name="customerChoosenCar"
+                  value={customer.customerChoosenCar}
+                  onChange={handleCarChange}
+                  className="w-full mt-1 px-3 py-2 border rounded-lg text-sm"
+                >
+                  <option value="">Select Car</option>
+                  {cars.map((car) => (
+                    <option key={car.id} value={car.id}>
+                      {car.carName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <Label>Choose From Date</Label>
+                <Input
+                  type="date"
+                  name="customerChoosenCarFrom"
+                  value={customer.customerChoosenCarFrom}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <Label>Choose To Date</Label>
+                <Input
+                  type="date"
+                  name="customerChoosenCarTo"
+                  value={customer.customerChoosenCarTo}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+          </div>
 
           {/* SUBMIT */}
           <Button
             type="submit"
-            className="w-full mt-4 bg-yellow-500 hover:bg-yellow-600 transition text-black font-semibold py-3 rounded-lg shadow-lg"
+            className="w-full py-4 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold text-lg rounded-xl shadow-lg"
           >
-            Submit Form
+            Submit Booking
           </Button>
         </form>
-
-        {/* --------------------- CAR PREVIEW --------------------- */}
-        <div className="flex flex-col items-center">
-          {selectedCar ? (
-            <>
-              <h3 className="text-2xl font-semibold mb-3 text-black">
-                You Selected:
-                <span className="text-yellow-400"> {selectedCar.carName}</span>
-              </h3>
-
-              <img
-                src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${selectedCar.carImageMain}`}
-                alt="Selected Car"
-                className="w-full max-w-md rounded-2xl shadow-2xl border border-white/10"
-              />
-            </>
-          ) : (
-            <div className="opacity-40 text-lg text-black">Select a car to preview …</div>
-          )}
-        </div>
       </div>
     </div>
   );
