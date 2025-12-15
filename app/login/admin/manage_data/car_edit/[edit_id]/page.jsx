@@ -191,7 +191,7 @@ const AdminCarEdit = () => {
                   <Label className="mb-2 ms-1">{label}</Label>
                   <Input
                     name={name}
-                    value={carInfo[name]}
+                    value={carInfo?.[name]}
                     onChange={updateValue}
                     placeholder={label}
                   />
@@ -205,7 +205,7 @@ const AdminCarEdit = () => {
                 <Label className="mb-2 ms-1">Car Status</Label>
                 <select
                   name="carStatus"
-                  value={carInfo.carStatus}
+                  value={carInfo?.carStatus}
                   onChange={updateValue}
                   className="border rounded-lg p-2 text-sm w-full"
                 >
@@ -223,7 +223,7 @@ const AdminCarEdit = () => {
                 <Input
                   type="date"
                   name="carAvailableDate"
-                  value={carInfo.carAvailableDate}
+                  value={carInfo?.carAvailableDate}
                   onChange={updateValue}
                 />
                 {errors.carAvailableDate && (
@@ -236,7 +236,7 @@ const AdminCarEdit = () => {
               <div className="md:col-span-3">
                 <textarea
                   name="carDescription"
-                  value={carInfo.carDescription}
+                  value={carInfo?.carDescription}
                   onChange={updateValue}
                   className="border rounded-lg p-3 w-full h-32"
                   placeholder="Car Description"
@@ -278,7 +278,7 @@ const AdminCarEdit = () => {
                   <Label className="mb-2 ms-1">{label}</Label>
                   <Input
                     name={name}
-                    value={carInfo[name]}
+                    value={carInfo?.[name]}
                     onChange={updateValue}
                     placeholder={label}
                   />
@@ -292,7 +292,7 @@ const AdminCarEdit = () => {
                 <Label className="mb-2 ms-1">Select Currency</Label>
                 <select
                   name="carCurrency"
-                  value={carInfo.carCurrency}
+                  value={carInfo?.carCurrency}
                   onChange={updateValue}
                   className="border rounded-lg p-2 text-sm w-full"
                 >
@@ -341,7 +341,7 @@ const AdminCarEdit = () => {
 
                   {preview[name] && (
                     <img
-                      src={preview[name]}
+                      src={preview?.[name]}
                       alt={name}
                       className="mt-2 rounded-lg w-48 border"
                     />
