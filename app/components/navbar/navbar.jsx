@@ -52,7 +52,7 @@ export default function Navbar() {
                     ${
                       isActive
                         ? "after:absolute after:left-0 after:-bottom-2 after:h-[3px] after:w-full after:bg-yellow-400"
-                        : "hover:after:absolute hover:after:left-0 hover:after:-bottom-2 hover:after:h-[3px] hover:after:w-full hover:after:bg-yellow-400"
+                        : "hover:after:absolute hover:after:left-0 hover:after:-bottom-2 hover:after:h-[3px] hover:after:w-full hover:after:bg-green-400"
                     }
                   `}
                 >

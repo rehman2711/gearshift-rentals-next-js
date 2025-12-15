@@ -91,7 +91,7 @@ export default function CheckAvailability() {
       {/* Back Button */}
       <Button
         onClick={() => router.back()}
-        className="absolute top-20 right-4 bg-black/80 text-white rounded-full flex items-center justify-center text-sm hover:bg-black transition z-99"
+        className="absolute top-20 right-4 bg-black/80 text-white rounded-full flex items-center justify-center text-sm hover:bg-black transition z-40"
       >
         Back
       </Button>

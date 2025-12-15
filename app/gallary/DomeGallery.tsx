@@ -811,6 +811,63 @@ export default function DomeGallery({
     }
   `;
 
+  // Horizontal drag on scroll
+
+  const scrollVelocityRef = useRef(0);
+  const scrollRAFRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const el = mainRef.current;
+    if (!el) return;
+
+    const SMOOTHING = 0.92; // closer to 1 = smoother, longer
+    const SPEED = 0.004; // lower = slower, higher = faster
+    const STOP_EPSILON = 0.0005;
+
+    const animate = () => {
+      scrollVelocityRef.current *= SMOOTHING;
+
+      if (Math.abs(scrollVelocityRef.current) < STOP_EPSILON) {
+        scrollVelocityRef.current = 0;
+        scrollRAFRef.current = null;
+        return;
+      }
+
+      const nextY = wrapAngleSigned(
+        rotationRef.current.y + scrollVelocityRef.current
+      );
+
+      rotationRef.current = {
+        x: rotationRef.current.x, // 🔒 no vertical change
+        y: nextY,
+      };
+
+      applyTransform(rotationRef.current.x, nextY);
+      scrollRAFRef.current = requestAnimationFrame(animate);
+    };
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      if (focusedElRef.current) return;
+
+      stopInertia();
+
+      // accumulate scroll → momentum
+      scrollVelocityRef.current += e.deltaY * SPEED;
+
+      if (!scrollRAFRef.current) {
+        scrollRAFRef.current = requestAnimationFrame(animate);
+      }
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+
+    return () => {
+      el.removeEventListener("wheel", onWheel);
+      if (scrollRAFRef.current) cancelAnimationFrame(scrollRAFRef.current);
+    };
+  }, [stopInertia]);
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: cssStyles }} />
