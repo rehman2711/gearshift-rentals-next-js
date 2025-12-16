@@ -201,7 +201,6 @@ const AdminCarEdit = () => {
                 ["carName", "Car Name"],
                 ["carBrandName", "Brand"],
                 ["carModelName", "Model"],
-                ["carSlogan", "Slogan"],
                 ["carManufactureYear", "Manufacture Year"],
               ].map(([name, label]) => (
                 <div key={name}>
@@ -250,7 +249,24 @@ const AdminCarEdit = () => {
                 )}
               </div>
 
-              <div className="md:col-span-3">
+              <div className="md:col-span-1">
+                <Label className="mb-2 ms-1">Car Slogan</Label>
+                <textarea
+                  name="carSlogan"
+                  value={carInfo?.carSlogan}
+                  onChange={updateValue}
+                  className="border rounded-lg p-3 w-full h-32"
+                  placeholder="Car carSlogan"
+                />
+                {errors.carSlogan && (
+                  <p className="text-xs text-red-500">
+                    {errors.carSlogan}
+                  </p>
+                )}
+              </div>
+
+              <div className="md:col-span-2">
+                <Label className="mb-2 ms-1">Car Description</Label>
                 <textarea
                   name="carDescription"
                   value={carInfo?.carDescription}

@@ -64,7 +64,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
               />
 
               <div className="mt-3 flex items-center gap-4">
-                <Badge>{car.carBrandName}</Badge>
+                <Badge className="text-sm">{car.carBrandName}</Badge>
 
                 <button
                   onClick={(e) => {
@@ -77,8 +77,8 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                     setOpenId(car.id);
                   }}
                 >
-                  <Badge className="bg-green-400 hover:bg-green-400/70 rounded-sm active:translate-y-2 active:translate-x-1 transition duration-300">
-                    See Details
+                  <Badge className="bg-[#283618]/80 hover:bg-[#283618]/90 rounded-sm text-sm active:translate-y-2 active:translate-x-1 transition duration-300">
+                    Quick View
                   </Badge>
                 </button>
               </div>
@@ -181,7 +181,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                       <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">
                         {label}
                       </span>
-                      <Badge className={`px-4 py-1 ${color}`}>{value}</Badge>
+                      <Badge className={`hover:underline underline-offset-4 transition-transform duration-10000 px-4 py-1 ${color}`}>{value}</Badge>
                     </div>
                   ))}
                 </div>

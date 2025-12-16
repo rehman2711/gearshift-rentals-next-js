@@ -97,7 +97,7 @@ export default function AdminLayout({ children }) {
 
           <SidebarLink
             href="/login/admin/completed_bookings"
-            label="Completed Bookings"
+            label="Approved Bookings"
             icon={<Check size={20} />}
             open={open}
             pathname={pathname}

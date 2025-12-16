@@ -52,7 +52,7 @@ const ViewBookings = () => {
           }}
         >
           <h1 className="text-black text-3xl font-bold tracking-wide mx-auto">
-            ALL COMPLETED BOOKINGS
+            ALL APPROVED BOOKINGS
           </h1>
           <Button
             variant="secondary"

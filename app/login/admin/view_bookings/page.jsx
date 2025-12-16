@@ -149,7 +149,7 @@ const ViewBookings = () => {
                     bookingCompleted(val.id);
                   }}
                 >
-                  Booking Completed
+                  Booking Approved 
                 </Button>
               </div>
             </div>
