@@ -278,7 +278,7 @@ const FormCar = () => {
             <Button
               type="button"
               onClick={() => validateStep1() && setStep(2)}
-              className="w-full bg-yellow-300/80 text-black hover:bg-yellow-300/70"
+              className="w-full bg-yellow-400/90 text-black hover:bg-yellow-400/70"
             >
               Continue
             </Button>
@@ -340,7 +340,7 @@ const FormCar = () => {
               <Button
                 type="button"
                 onClick={() => validateStep2() && setStep(3)}
-                className="bg-yellow-300/80 text-black hover:bg-yellow-300/70"
+                className="bg-yellow-400/90 text-black hover:bg-yellow-400/70"
               >
                 Continue
               </Button>
@@ -404,7 +404,7 @@ const FormCar = () => {
               </Button>
               <Button
                 type="submit"
-                className="bg-yellow-300/80 text-black hover:bg-yellow-300/70"
+                className="bg-yellow-400/90 text-black hover:bg-yellow-400/70"
               >
                 Submit Details
               </Button>

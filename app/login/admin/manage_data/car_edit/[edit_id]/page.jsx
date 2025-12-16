@@ -139,7 +139,6 @@ const AdminCarEdit = () => {
   const updateInformation = async (e) => {
     e.preventDefault();
     if (!validateStep3()) return;
-    setIsLoading(true);
 
     try {
       const fd = new FormData();
@@ -154,8 +153,6 @@ const AdminCarEdit = () => {
       router.replace("/login/admin/manage_data");
     } catch (error) {
       console.log("Error While Updating Information" + error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -272,7 +269,7 @@ const AdminCarEdit = () => {
               <Button
                 type="button"
                 onClick={() => validateStep1() && setStep(2)}
-                className="bg-yellow-300/80 text-black hover:bg-yellow-300/70"
+                className="bg-yellow-400/90 text-black hover:bg-yellow-400/70"
               >
                 Continue
               </Button>
@@ -334,7 +331,7 @@ const AdminCarEdit = () => {
               <Button
                 type="button"
                 onClick={() => validateStep2() && setStep(3)}
-                className="bg-yellow-300/80 text-black hover:bg-yellow-300/70"
+                className="bg-yellow-400/90 text-black hover:bg-yellow-400/70"
               >
                 Continue
               </Button>
@@ -381,7 +378,7 @@ const AdminCarEdit = () => {
               </Button>
               <Button
                 type="submit"
-                className="bg-yellow-300/80 text-black hover:bg-yellow-300/70"
+                className="bg-yellow-400/90 text-black hover:bg-yellow-400/70"
               >
                 Save Changes
               </Button>
