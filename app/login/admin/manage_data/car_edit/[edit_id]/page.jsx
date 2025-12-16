@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Loader from "@/app/loader";
 
 const AdminCarEdit = () => {
   const { edit_id } = useParams();
@@ -13,6 +14,7 @@ const AdminCarEdit = () => {
 
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const [carInfo, setCarInfo] = useState({
     carName: "",
@@ -45,20 +47,27 @@ const AdminCarEdit = () => {
 
   /* ---------------- FETCH CAR ---------------- */
   useEffect(() => {
+    setIsLoading(true);
     const fetchData = async () => {
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/single-car/${edit_id}`
-      );
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/single-car/${edit_id}`
+        );
 
-      const car = res.data[0];
-      setCarInfo(car);
+        const car = res.data[0];
+        setCarInfo(car);
 
-      setPreview({
-        carImageMain: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${car.carImageMain}`,
-        carImageSub1: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${car.carImageSub1}`,
-        carImageSub2: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${car.carImageSub2}`,
-        carImageSub3: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${car.carImageSub3}`,
-      });
+        setPreview({
+          carImageMain: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${car.carImageMain}`,
+          carImageSub1: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${car.carImageSub1}`,
+          carImageSub2: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${car.carImageSub2}`,
+          carImageSub3: `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${car.carImageSub3}`,
+        });
+      } catch (error) {
+        console.log("Error While Fetching Single Car Data" + error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchData();
@@ -130,18 +139,29 @@ const AdminCarEdit = () => {
   const updateInformation = async (e) => {
     e.preventDefault();
     if (!validateStep3()) return;
+    setIsLoading(true);
 
-    const fd = new FormData();
-    Object.entries(carInfo).forEach(([k, v]) => fd.append(k, v));
+    try {
+      const fd = new FormData();
+      Object.entries(carInfo).forEach(([k, v]) => fd.append(k, v));
 
-    await axios.patch(
-      `${process.env.NEXT_PUBLIC_API_URL}/edit-car/${edit_id}`,
-      fd,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
+      await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/edit-car/${edit_id}`,
+        fd,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
-    router.push("/login/admin/manage_data");
+      router.replace("/login/admin/manage_data");
+    } catch (error) {
+      console.log("Error While Updating Information" + error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="max-w-7xl mx-auto">

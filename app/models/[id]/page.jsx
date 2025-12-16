@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import Loader from "@/app/loader";
 
 /* -------------------------------------------------- */
 /* MAIN COMPONENT */
@@ -14,11 +15,12 @@ const DetailCars = () => {
   const router = useRouter();
 
   const [carData, setCarData] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedImg, setSelectedImg] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const result = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/single-car/${id}`
@@ -27,14 +29,17 @@ const DetailCars = () => {
         setSelectedImg(result.data.cImg);
       } catch (error) {
         console.log("Error fetching car details:", error);
+      } finally {
+        setIsLoading(false);
       }
-      setLoading(false);
     };
 
     fetchData();
   }, [id]);
 
-  if (loading) return <SkeletonUI />;
+  if (isLoading) {
+    return <Loader />;
+  }
 
   if (!carData?.carName)
     return (
@@ -283,12 +288,5 @@ const ContactItem = ({ text }) => (
   </div>
 );
 
-/* ---------------- SKELETON ---------------- */
-
-const SkeletonUI = () => (
-  <div className="animate-pulse w-full min-h-screen pt-32 px-10 bg-gray-100">
-    <div className="max-w-7xl mx-auto bg-gray-300 h-[450px] rounded-xl"></div>
-  </div>
-);
 
 export default DetailCars;

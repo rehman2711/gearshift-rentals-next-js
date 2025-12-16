@@ -1,18 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Loader from "@/app/loader";
+import toast from "react-hot-toast";
 
 const FormCar = () => {
   const router = useRouter();
-
+  const [showLoader, setShowLoader] = useState(true);
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
   const [preview, setPreview] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const [carInfo, setCarInfo] = useState({
     carName: "",
@@ -35,6 +38,18 @@ const FormCar = () => {
     carStatus: "",
     carAvailableDate: "",
   });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoader(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showLoader) {
+    return <Loader />;
+  }
 
   /* ---------------- HANDLER ---------------- */
   const updateValue = (e) => {
@@ -97,20 +112,46 @@ const FormCar = () => {
 
   /* ---------------- SUBMIT ---------------- */
   const submitForm = async (e) => {
-    e.preventDefault();
-    if (!validateStep3()) return;
+    setIsLoading(true);
+    try {
+      e.preventDefault();
+      if (!validateStep3()) return;
 
-    const formData = new FormData();
-    Object.entries(carInfo).forEach(([key, val]) => formData.append(key, val));
+      const formData = new FormData();
+      Object.entries(carInfo).forEach(([key, val]) =>
+        formData.append(key, val)
+      );
 
-    await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/insert-car`,
-      formData,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
-
-    router.push("/login/admin/manage_data");
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/insert-car`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+    } catch (error) {
+      console.log("Error while creating cars", error);
+    } finally {
+      setIsLoading(false);
+      // toaster
+      toast.success("Car Data Added Successfully.", {
+        duration: 10000, // 10 seconds
+        style: {
+          border: "1px solid rgb(22, 163, 74)", // green-600
+          padding: "10px",
+          color: "#065f46", // emerald-800
+          background: "#ecfdf5", // green-50
+        },
+        iconTheme: {
+          primary: "#16a34a",
+          secondary: "#ecfdf5",
+        },
+      });
+      router.replace("/login/admin/manage_data");
+    }
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   /* ---------------- UI ---------------- */
   return (
@@ -154,7 +195,6 @@ const FormCar = () => {
                 ["Car Name", "carName"],
                 ["Brand", "carBrandName"],
                 ["Model", "carModelName"],
-                ["Slogan", "carSlogan"],
                 ["Manufacture Year", "carManufactureYear"],
               ].map(([label, name]) => (
                 <div key={name}>
@@ -163,6 +203,7 @@ const FormCar = () => {
                     name={name}
                     placeholder={label}
                     onChange={updateValue}
+                    className="!placeholder:text-sm"
                   />
                   {errors[name] && (
                     <p className="text-xs text-red-500 mt-1">{errors[name]}</p>
@@ -194,10 +235,26 @@ const FormCar = () => {
                   type="date"
                   name="carAvailableDate"
                   onChange={updateValue}
+                  className="placeholder:text-sm"
                 />
                 {errors.carAvailableDate && (
                   <p className="text-xs text-red-500 mt-1">
                     {errors.carAvailableDate}
+                  </p>
+                )}
+              </div>
+
+              <div className="md:col-span-1">
+                <Label className="mb-2 ms-1">Slogan</Label>
+                <textarea
+                  name="carSlogan"
+                  placeholder="Car Slogan"
+                  onChange={updateValue}
+                  className="border rounded-lg p-3 w-full h-32 placeholder:text-sm"
+                />
+                {errors.carSlogan && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.carSlogan}
                   </p>
                 )}
               </div>
@@ -208,7 +265,7 @@ const FormCar = () => {
                   name="carDescription"
                   placeholder="Car Description"
                   onChange={updateValue}
-                  className="border rounded-lg p-3 w-full h-32"
+                  className="border rounded-lg p-3 w-full h-32 placeholder:text-sm"
                 />
                 {errors.carDescription && (
                   <p className="text-xs text-red-500 mt-1">
@@ -248,6 +305,7 @@ const FormCar = () => {
                     name={name}
                     placeholder={label}
                     onChange={updateValue}
+                    className="placeholder:text-sm"
                   />
                   {errors[name] && (
                     <p className="text-xs text-red-500 mt-1">{errors[name]}</p>

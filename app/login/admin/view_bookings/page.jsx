@@ -4,23 +4,36 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import Loader from "@/app/loader";
 
 const ViewBookings = () => {
   const [viewCustomerBookings, setViewCustomerBookings] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
   const fetchCustomer = async () => {
-    const result = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/book_car`
-    );
-    setViewCustomerBookings(result.data);
-    console.log(result.data);
+    setIsLoading(true);
+    try {
+      const result = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/book_car`
+      );
+      setViewCustomerBookings(result.data);
+      console.log(result.data);
+    } catch (error) {
+      console.log("Error While Fetching Upcoming Booking" + error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchCustomer();
   }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   const bookingCompleted = async (booking_completed_id) => {
     try {

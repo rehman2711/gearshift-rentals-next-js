@@ -4,6 +4,9 @@ import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import Loader from "@/app/loader";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const initialCustomerState = {
   customerImage: null,
@@ -19,19 +22,37 @@ const initialCustomerState = {
 };
 
 const RentNow = () => {
+  const router = useRouter();
+
   const [cars, setCars] = useState([]);
   const [selectedCar, setSelectedCar] = useState(null);
   const [customer, setCustomer] = useState(initialCustomerState);
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   /* -------------------- FETCH CARS -------------------- */
   useEffect(() => {
-    axios
-      .get(`${process.env.NEXT_PUBLIC_API_URL}/all-cars`)
-      .then((res) => setCars(res.data))
-      .catch(console.error);
+    const fetchCars = async () => {
+      try {
+        setIsLoading(true);
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/all-cars`
+        );
+        setCars(res.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCars();
   }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   /* -------------------- HANDLERS -------------------- */
   const handleChange = (e) => {
@@ -92,17 +113,44 @@ const RentNow = () => {
     e.preventDefault();
     if (!validateStep2()) return;
 
-    const formData = new FormData();
-    Object.entries(customer).forEach(([k, v]) => formData.append(k, v));
+    setIsLoading(true);
 
-    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/book-car`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    try {
+      const formData = new FormData();
+      Object.entries(customer).forEach(([k, v]) => formData.append(k, v));
 
-    setCustomer(initialCustomerState);
-    setSelectedCar(null);
-    setStep(1);
-    setErrors({});
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/book-car`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      setCustomer(initialCustomerState);
+      setSelectedCar(null);
+      setStep(1);
+      setErrors({});
+      router.replace("/models");
+
+      toast.success("Booking Completed.", {
+        duration: 10000, // 10 seconds
+        style: {
+          border: "1px solid rgb(22, 163, 74)", // green-600
+          padding: "10px",
+          color: "#065f46", // emerald-800
+          background: "#ecfdf5", // green-50
+        },
+        iconTheme: {
+          primary: "#16a34a",
+          secondary: "#ecfdf5",
+        },
+      });
+    } catch (err) {
+      console.error("Error submitting booking:", err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   /* -------------------- UI -------------------- */

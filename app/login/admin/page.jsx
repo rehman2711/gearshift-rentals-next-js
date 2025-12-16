@@ -1,10 +1,24 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Loader from "@/app/loader";
 
 const AdminPanelIndex = () => {
   const router = useRouter();
+  const [showLoader, setShowLoader] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoader(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showLoader) {
+    return <Loader />;
+  }
 
   return (
     <>

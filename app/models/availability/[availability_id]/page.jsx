@@ -6,16 +6,18 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import Loader from "@/app/loader";
 
 export default function CheckAvailability() {
   const router = useRouter();
   const { availability_id } = useParams();
 
   const [carData, setCarData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Fetch Car
   const fetchCar = async () => {
+    setIsLoading(true);
     try {
       const result = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/single-car/${availability_id}`
@@ -25,7 +27,7 @@ export default function CheckAvailability() {
     } catch (error) {
       console.log("Error fetching car:", error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -33,19 +35,8 @@ export default function CheckAvailability() {
     fetchCar();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ repeat: Infinity, duration: 1, ease: "easeInOut" }}
-          className="text-gray-700 text-lg font-semibold"
-        >
-          Loading car details...
-        </motion.div>
-      </div>
-    );
+  if (isLoading) {
+    return <Loader />;
   }
 
   if (!carData) {

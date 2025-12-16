@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/navbar/navbar";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,9 +35,11 @@ export default function RootLayout({
             radial-gradient(circle at 20px 20px, rgba(55, 65, 81, 0.12) 2px, transparent 2px),
             radial-gradient(circle at 40px 40px, rgba(55, 65, 81, 0.12) 2px, transparent 2px)
           `,
-          backgroundSize: '40px 40px, 40px 40px, 40px 40px, 40px 40px',
+          backgroundSize: "40px 40px, 40px 40px, 40px 40px, 40px 40px",
         }}
       >
+        <Toaster />
+
         <Navbar />
         {children}
       </body>

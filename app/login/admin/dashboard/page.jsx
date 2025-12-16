@@ -3,9 +3,24 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import React, { useEffect, useState } from "react";
+import Loader from "@/app/loader";
 
 export default function AdminDashboard() {
   const router = useRouter();
+  const [showLoader, setShowLoader] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoader(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showLoader) {
+    return <Loader />;
+  }
 
   return (
     <div className="max-w-7xl mx-auto space-y-10">

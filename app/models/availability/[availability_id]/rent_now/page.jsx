@@ -6,6 +6,8 @@ import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Loader from "@/app/loader";
+import toast from "react-hot-toast";
 
 export default function RentTheCarNow() {
   const router = useRouter();
@@ -14,6 +16,7 @@ export default function RentTheCarNow() {
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
   const [selectedCar, setSelectedCar] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [customer, setCustomer] = useState({
     customerName: "",
@@ -83,8 +86,7 @@ export default function RentTheCarNow() {
     const err = {};
     if (!customer.customerChoosenCarFrom)
       err.customerChoosenCarFrom = "Required";
-    if (!customer.customerChoosenCarTo)
-      err.customerChoosenCarTo = "Required";
+    if (!customer.customerChoosenCarTo) err.customerChoosenCarTo = "Required";
 
     setErrors(err);
     return Object.keys(err).length === 0;
@@ -95,11 +97,11 @@ export default function RentTheCarNow() {
     e.preventDefault();
     if (!validateStep2()) return;
 
+    setIsLoading(true);
+
     try {
       const formData = new FormData();
-      Object.entries(customer).forEach(([k, v]) =>
-        formData.append(k, v)
-      );
+      Object.entries(customer).forEach(([k, v]) => formData.append(k, v));
 
       await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/book-car`,
@@ -107,11 +109,36 @@ export default function RentTheCarNow() {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      router.push("/");
+      toast.success("Booking Completed.", {
+        duration: 10000, // 10 seconds
+        style: {
+          border: "1px solid rgb(22, 163, 74)", // green-600
+          padding: "10px",
+          color: "#065f46", // emerald-800
+          background: "#ecfdf5", // green-50
+        },
+        iconTheme: {
+          primary: "#16a34a",
+          secondary: "#ecfdf5",
+        },
+      });
+
+      setSelectedCar(null);
+      setStep(1);
+      setErrors({});
+
+      router.replace("/models");
     } catch (err) {
       console.error("Error submitting booking:", err);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  // Submit after loading
+  if (isLoading) {
+    return <Loader />;
+  }
 
   /* ---------------- UI ---------------- */
   return (
@@ -137,7 +164,7 @@ export default function RentTheCarNow() {
                 ["Residential Address", "customerAddress"],
               ].map(([label, name]) => (
                 <div key={name}>
-                  <Label className="mb-1">{label}</Label>
+                  <Label className="mb-2 ms-1">{label}</Label>
                   <Input
                     name={name}
                     value={customer[name]}
@@ -150,12 +177,12 @@ export default function RentTheCarNow() {
               ))}
 
               <div>
-                <Label>Gender</Label>
+                <Label className="mb-2 ms-1">Gender</Label>
                 <select
                   name="customerGender"
                   value={customer.customerGender}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded-lg"
+                  className="w-full p-2 text-sm border rounded-lg"
                 >
                   <option value="">Select Gender</option>
                   <option>Male</option>
@@ -169,17 +196,20 @@ export default function RentTheCarNow() {
               </div>
 
               <div>
-                <Label>PAN Number</Label>
+                <Label className="mb-2 ms-1">PAN Number</Label>
                 <Input
                   name="customerPAN"
                   value={customer.customerPAN}
                   onChange={handleChange}
                   placeholder="ABCDE1234F"
                 />
+                <p className="text-xs mt-2 ms-2 text-green-600">
+                  FORMAT : ABCDE1234F
+                </p>
               </div>
 
               <div>
-                <Label>Customer Photo</Label>
+                <Label className="mb-2 ms-1">Customer Photo</Label>
                 <Input type="file" onChange={handleFileChange} />
               </div>
             </div>
@@ -202,7 +232,7 @@ export default function RentTheCarNow() {
               <h3 className="text-xl font-semibold">Booking Details</h3>
 
               <div>
-                <Label>Selected Car</Label>
+                <Label className="mb-2 ms-1">Selected Car</Label>
                 <Input
                   value={selectedCar?.carName || ""}
                   readOnly
@@ -211,7 +241,7 @@ export default function RentTheCarNow() {
               </div>
 
               <div>
-                <Label>From Date</Label>
+                <Label className="mb-2 ms-1">From Date</Label>
                 <Input
                   type="date"
                   name="customerChoosenCarFrom"
@@ -226,7 +256,7 @@ export default function RentTheCarNow() {
               </div>
 
               <div>
-                <Label>To Date</Label>
+                <Label className="mb-2 ms-1">To Date</Label>
                 <Input
                   type="date"
                   name="customerChoosenCarTo"
@@ -262,9 +292,7 @@ export default function RentTheCarNow() {
             <div className="bg-white/70 p-6 rounded-2xl shadow-xl border flex flex-col items-center">
               <h4 className="text-lg font-semibold mb-4">
                 You Chose{" "}
-                <span className="text-blue-600">
-                  {selectedCar?.carName}
-                </span>
+                <span className="text-blue-600">{selectedCar?.carName}</span>
               </h4>
 
               {selectedCar?.carImageMain ? (

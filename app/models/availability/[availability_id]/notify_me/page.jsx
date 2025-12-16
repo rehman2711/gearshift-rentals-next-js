@@ -2,22 +2,32 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Loader from "@/app/loader";
 
 const NotifyMe = () => {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     console.log("Notification requested for:", email);
     setSubmitted(true);
+    setIsLoading(false);
   };
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
-    <div className="flex justify-center items-center h-[92vh] p-4" style={{
-      background: `
+    <div
+      className="flex justify-center items-center h-[92vh] p-4"
+      style={{
+        background: `
         /* TOP: subtle line texture */
         repeating-linear-gradient(
           45deg,
@@ -43,8 +53,9 @@ const NotifyMe = () => {
         /* BASE */
         rgb(254, 250, 250)
       `,
-      backgroundSize: "40px 40px, 40px 40px, auto, auto, auto, auto, auto",
-    }}>
+        backgroundSize: "40px 40px, 40px 40px, auto, auto, auto, auto, auto",
+      }}
+    >
       <div className="bg-white p-8 w-full max-w-sm rounded-2xl shadow-lg">
         <h2 className="text-center mb-2 font-bold text-2xl">Stay Updated!</h2>
 

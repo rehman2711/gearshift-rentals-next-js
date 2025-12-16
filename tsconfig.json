@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "app/components/navbar/navbar.jsx", "app/home/navbar.jsx", "components/FlipCard.jsx", "app/models/page.jsx", "app/gallary/page.jsx", "app/login/admin/layout.jsx"  ],
+, "app/components/navbar/navbar.jsx", "app/home/navbar.jsx", "components/FlipCard.jsx", "app/models/page.jsx", "app/gallary/page.jsx", "app/login/admin/layout.jsx", "app/components/modal.jsx"  ],
   "exclude": ["node_modules"]
 }

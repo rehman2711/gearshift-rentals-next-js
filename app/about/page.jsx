@@ -1,7 +1,25 @@
+"use client";
 import Container from "@/app/components/Container";
 import BentoGrid from "@/app/components/BentoGrid";
+import { useEffect } from "react";
+import Loader from "@/app/loader";
+import { useState } from "react";
 
 const About = () => {
+  const [showLoader, setShowLoader] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoader(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showLoader) {
+    return <Loader />;
+  }
+
   const numarr = [
     { id: 1, num: "10+", word: "Years of Experience" },
     { id: 2, num: "1000+", word: "Happy Clients" },
@@ -187,7 +205,9 @@ const About = () => {
             </div>
 
             <div className="my-8 flex justify-center">
-              <h1 className="text-2xl font-bold underline underline-offset-8">OUR SHOWCASE</h1>
+              <h1 className="text-2xl font-bold underline underline-offset-8">
+                OUR SHOWCASE
+              </h1>
             </div>
             <div className="p-2 rounded-3xl bg-gray-400/30">
               <div className="p-5 rounded-2xl bg-[#283618]/40">

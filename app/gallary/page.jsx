@@ -2,13 +2,16 @@
 import React, { useEffect, useState } from "react";
 import DomeGallery from "./DomeGallery";
 import axios from "axios";
+import Loader from "@/app/loader";
 
 const Gallary = () => {
   const [fetchedData, setFetchedData] = useState([]);
-  const [images, setImages] = useState([]); //
+  const [images, setImages] = useState([]); // images get filled from fetchdata in manner how we want
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchImages = async () => {
+      setIsLoading(true);
       try {
         const imageResponse = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/all-cars`
@@ -26,11 +29,17 @@ const Gallary = () => {
         setImages(formattedImages);
       } catch (error) {
         console.error("Error fetching cars images:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchImages();
   }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   console.log(images);
 
