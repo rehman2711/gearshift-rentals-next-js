@@ -8,240 +8,206 @@ import { useRouter } from "next/navigation";
 
 export default function FeaturedBellows({ allCarsData = [] }) {
   const [openId, setOpenId] = useState(null);
+  const [activeRect, setActiveRect] = useState(null);
   const router = useRouter();
+
+  const activeCar = allCarsData.find((c) => c.id === openId);
+
+  const closeModal = () => {
+    setOpenId(null);
+    setActiveRect(null);
+  };
 
   return (
     <div
       className="relative w-full min-h-screen p-8"
       style={{
         background: `
-        /* TOP: subtle line texture */
-        repeating-linear-gradient(
-          45deg,
-          rgba(16, 185, 129, 0.06) 0,
-          rgba(16, 185, 129, 0.06) 1px,
-          transparent 1px,
-          transparent 20px
-        ),
-        repeating-linear-gradient(
-          -45deg,
-          rgba(6, 182, 212, 0.06) 0,
-          rgba(6, 182, 212, 0.06) 1px,
-          transparent 10px,
-          transparent 15px
-        ),
-    
-        /* MIDDLE: green-blue radial glows */
-        radial-gradient(ellipse 120% 80% at 70% 20%, rgba(16, 185, 129, 0.14), transparent 50%),
-        radial-gradient(ellipse 100% 60% at 30% 10%, rgba(6, 182, 212, 0.16), transparent 60%),
-        radial-gradient(ellipse 90% 70% at 50% 0%, rgba(56, 189, 248, 0.14), transparent 65%),
-        radial-gradient(ellipse 110% 50% at 80% 30%, rgba(34, 197, 94, 0.10), transparent 40%),
-    
-        /* BASE */
-        rgb(254, 250, 250)
-      `,
-        backgroundSize: "40px 40px, 40px 40px, auto, auto, auto, auto, auto",
+          repeating-linear-gradient(
+            45deg,
+            rgba(16, 185, 129, 0.06) 0,
+            rgba(16, 185, 129, 0.06) 1px,
+            transparent 1px,
+            transparent 20px
+          ),
+          repeating-linear-gradient(
+            -45deg,
+            rgba(6, 182, 212, 0.06) 0,
+            rgba(6, 182, 212, 0.06) 1px,
+            transparent 10px,
+            transparent 15px
+          ),
+          radial-gradient(ellipse 120% 80% at 70% 20%, rgba(16, 185, 129, 0.14), transparent 50%),
+          radial-gradient(ellipse 100% 60% at 30% 10%, rgba(6, 182, 212, 0.16), transparent 60%),
+          rgb(254, 250, 250)
+        `,
       }}
     >
       {/* GRID */}
-      <div
-        className="grid grid-cols-3 gap-6 auto-rows-[260px] max-w-7xl mx-auto"
-        style={{ position: "relative" }}
-      >
-        {allCarsData.map((car) => {
-          const isOpen = openId === car.id;
+      <div className="grid grid-cols-3 gap-6 auto-rows-[260px] max-w-7xl mx-auto">
+        {allCarsData.map((car) => (
+          <motion.div
+            key={car.id}
+            data-card
+            layout
+            className="relative rounded-2xl border border-gray-200 shadow-lg overflow-hidden"
+          >
+            <div className="h-full w-full flex flex-col justify-center items-center p-4">
+              <h3 className="text-xl font-bold text-gray-800 mb-2">
+                {car.carName}
+              </h3>
 
-          return (
-            <motion.div
-              key={car.id}
-              layout
-              layoutId={`card-${car.id}`}
-              onClick={() => setOpenId(isOpen ? null : car.id)}
-              transition={{ layout: { duration: 0.6, ease: "easeInOut" } }}
-              className={`relative cursor-pointer rounded-2xl border border-gray-200 shadow-lg overflow-hidden
-                ${isOpen ? "z-50 col-span-2 row-span-2" : "z-10"}
-              `}
-            >
-              {/* COLLAPSED VIEW */}
-              {!isOpen && (
-                <div
-                  className="h-full w-full flex flex-col justify-center items-center p-4"
-                  style={{
-                    background: `
-                    /* TOP: subtle line texture */
-                    repeating-linear-gradient(
-                      45deg,
-                      rgba(16, 185, 129, 0.06) 0,
-                      rgba(16, 185, 129, 0.06) 1px,
-                      transparent 1px,
-                      transparent 20px
-                    ),
-                    repeating-linear-gradient(
-                      -45deg,
-                      rgba(6, 182, 212, 0.06) 0,
-                      rgba(6, 182, 212, 0.06) 1px,
-                      transparent 10px,
-                      transparent 15px
-                    ),
-                
-                    /* MIDDLE: green-blue radial glows */
-                    radial-gradient(ellipse 120% 80% at 70% 20%, rgba(16, 185, 129, 0.14), transparent 50%),
-                    radial-gradient(ellipse 100% 60% at 30% 10%, rgba(6, 182, 212, 0.16), transparent 60%),
-                    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(56, 189, 248, 0.14), transparent 65%),
-                    radial-gradient(ellipse 110% 50% at 80% 30%, rgba(34, 197, 94, 0.10), transparent 40%),
-                
-                    /* BASE */
-                    rgb(254, 250, 250)
-                  `,
-                    backgroundSize:
-                      "40px 40px, 40px 40px, auto, auto, auto, auto, auto",
+              <img
+                src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${car.carImageMain}`}
+                alt={car.carName}
+                className="w-full h-40 object-cover rounded-xl"
+              />
+
+              <div className="mt-3 flex items-center gap-4">
+                <Badge>{car.carBrandName}</Badge>
+
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const rect = e.currentTarget
+                      .closest("[data-card]")
+                      .getBoundingClientRect();
+
+                    setActiveRect(rect);
+                    setOpenId(car.id);
                   }}
                 >
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">
-                    {car.carName}
-                  </h3>
-
-                  <img
-                    src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${car.carImageMain}`}
-                    alt={car.carName}
-                    className="w-full h-40 object-cover rounded-xl"
-                  />
-
-                  <div className="mt-3 flex gap-2">
-                    <Badge>{car.carBrandName}</Badge>
-                    <Badge variant="secondary">{car.carFuelType}</Badge>
-                  </div>
-                </div>
-              )}
-
-              {/* EXPANDED VIEW */}
-              <AnimatePresence>
-                {isOpen && (
-                  <motion.div
-                    key="expanded"
-                    initial={{ opacity: 0, scale: 0.96 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.96 }}
-                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                    className="absolute inset-0 p-8 rounded-2xl z-50 border border-3 border-black/5"
-                    style={{
-                      background: `
-                        /* TOP: subtle line texture */
-                        repeating-linear-gradient(
-                          45deg,
-                          rgba(16, 185, 129, 0.06) 0,
-                          rgba(16, 185, 129, 0.06) 1px,
-                          transparent 1px,
-                          transparent 20px
-                        ),
-                        repeating-linear-gradient(
-                          -45deg,
-                          rgba(6, 182, 212, 0.06) 0,
-                          rgba(6, 182, 212, 0.06) 1px,
-                          transparent 10px,
-                          transparent 15px
-                        ),
-                    
-                        /* MIDDLE: green-blue radial glows */
-                        radial-gradient(ellipse 120% 80% at 70% 20%, rgba(16, 185, 129, 0.14), transparent 50%),
-                        radial-gradient(ellipse 100% 60% at 30% 10%, rgba(6, 182, 212, 0.16), transparent 60%),
-                        radial-gradient(ellipse 90% 70% at 50% 0%, rgba(56, 189, 248, 0.14), transparent 65%),
-                        radial-gradient(ellipse 110% 50% at 80% 30%, rgba(34, 197, 94, 0.10), transparent 40%),
-                    
-                        /* BASE */
-                        rgb(254, 250, 250)
-                      `,
-                      backgroundSize:
-                        "40px 40px, 40px 40px, auto, auto, auto, auto, auto",
-                    }}
-                  >
-                    <div className="grid grid-cols-2 gap-8 h-full">
-                      {/* IMAGE */}
-                      <div className="h-full flex items-center justify-center">
-                        <img
-                          src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${car.carImageMain}`}
-                          alt={car.carName}
-                          className="w-full h-full object-cover rounded-xl"
-                        />
-                      </div>
-
-                      {/* CONTENT */}
-                      <div className="flex flex-col justify-between h-full">
-                        {/* TOP */}
-                        <div className="space-y-6">
-                          <h2 className="text-3xl font-bold text-center text-gray-900">
-                            {car.carName}
-                          </h2>
-
-                          <p className="text-gray-600 text-center max-w-md mx-auto">
-                            {car.carSlogan}
-                          </p>
-
-                          {/* SPECS */}
-                          <div className="grid grid-cols-3 gap-y-6 gap-x-4 pt-4">
-                            {[
-                              ["Type", car.carModelName, "bg-blue-500"],
-                              ["Brand", car.carBrandName, "bg-green-500"],
-                              ["Range", car.carMileage, "bg-orange-500"],
-                              ["Price", car.carRent, "bg-purple-500"],
-                              ["Fuel", car.carFuelType, "bg-violet-700"],
-                              ["Gear", car.carGearSystem, "bg-indigo-600"],
-                            ].map(([label, value, color]) => (
-                              <div
-                                key={label}
-                                className="flex flex-col items-center gap-2"
-                              >
-                                <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-                                  {label}
-                                </span>
-                                <Badge className={`px-4 py-1 ${color}`}>
-                                  {value}
-                                </Badge>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="flex flex-col mx-auto">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-500 text-center mb-2">
-                            RENT
-                          </span>
-                          <Badge className="py-3 px-8 bg-black/5 text-black text-base border border-4 border-white/40 rounded-xl">
-                            {car.carCurrency} {car.carRent}
-                          </Badge>
-                        </div>
-
-                        {/* BOTTOM BUTTONS */}
-                        <div className="flex justify-center gap-4 pt-6">
-                          <Button
-                            className="bg-green-500 hover:bg-green-600"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              router.push(`/models/${car.id}`);
-                            }}
-                          >
-                            View Details
-                          </Button>
-
-                          <Button
-                            className="bg-yellow-400 hover:bg-yellow-500 text-white"
-                            variant="secondary"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              router.push(`/models/availability/${car.id}`);
-                            }}
-                          >
-                            Check Availability
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          );
-        })}
+                  <Badge className="bg-green-400 hover:bg-green-400/70 rounded-sm">
+                    See Details
+                  </Badge>
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
+
+      {/* BACKDROP BLUR OVERLAY */}
+      <AnimatePresence>
+        {openId && (
+          <motion.div
+            key="backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={closeModal}
+            className="fixed inset-0 z-[998] bg-black/30 backdrop-blur-md"
+          />
+        )}
+      </AnimatePresence>
+
+      {/* EXPANDED MODAL */}
+      <AnimatePresence>
+        {openId && activeRect && activeCar && (
+          <motion.div
+            initial={{
+              opacity: 0,
+              top: activeRect.top,
+              left: activeRect.left,
+              width: activeRect.width,
+              height: activeRect.height,
+            }}
+            animate={{
+              opacity: 1,
+              top: "15%",
+              left: "15%",
+              width: "70%",
+              height: "70%",
+            }}
+            exit={{
+              opacity: 0,
+              top: activeRect.top,
+              left: activeRect.left,
+              width: activeRect.width,
+              height: activeRect.height,
+            }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="fixed z-[999] rounded-2xl p-8 shadow-2xl border border-black/5"
+            style={{
+              background: `
+                repeating-linear-gradient(
+                  45deg,
+                  rgba(16, 185, 129, 0.06) 0,
+                  rgba(16, 185, 129, 0.06) 1px,
+                  transparent 1px,
+                  transparent 20px
+                ),
+                radial-gradient(ellipse 120% 80% at 70% 20%, rgba(16, 185, 129, 0.14), transparent 50%),
+                rgb(254, 250, 250)
+              `,
+            }}
+          >
+            <button onClick={closeModal} className="absolute top-4 right-4">
+              <Badge variant="destructive">Close</Badge>
+            </button>
+
+            <div className="grid grid-cols-2 gap-6 h-full">
+              <img
+                src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${activeCar.carImageMain}`}
+                alt={activeCar.carName}
+                className="w-full h-full object-cover rounded-xl"
+              />
+
+              <div className="flex flex-col justify-between">
+                <div>
+                  <h2 className="text-3xl font-bold text-center">
+                    {activeCar.carName}
+                  </h2>
+
+                  <p className="text-center text-gray-600 mt-4">
+                    {activeCar.carSlogan}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-3 gap-y-6 gap-x-4">
+                  {[
+                    ["Type", activeCar.carModelName, "bg-blue-500"],
+                    ["Brand", activeCar.carBrandName, "bg-green-500"],
+                    ["Range", activeCar.carMileage, "bg-orange-500"],
+                    ["Price", activeCar.carRent, "bg-purple-500"],
+                    ["Fuel", activeCar.carFuelType, "bg-violet-700"],
+                    ["Gear", activeCar.carGearSystem, "bg-indigo-600"],
+                  ].map(([label, value, color]) => (
+                    <div
+                      key={label}
+                      className="flex flex-col items-center gap-2"
+                    >
+                      <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                        {label}
+                      </span>
+                      <Badge className={`px-4 py-1 ${color}`}>{value}</Badge>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex justify-center gap-4 pt-6">
+                  <Button
+                    onClick={() => router.push(`/models/${activeCar.id}`)}
+                    className="bg-green-500 hover:bg-green-500/80"
+                  >
+                    View Details
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    className="bg-yellow-400 hover:bg-yellow-400/80 text-white"
+                    onClick={() =>
+                      router.push(`/models/availability/${activeCar.id}`)
+                    }
+                  >
+                    Check Availability
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
