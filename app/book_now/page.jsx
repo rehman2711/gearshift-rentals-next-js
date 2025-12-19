@@ -65,8 +65,15 @@ const RentNow = () => {
 
   const handleCarChange = (e) => {
     const carId = e.target.value;
-    setCustomer((prev) => ({ ...prev, customerChoosenCar: carId }));
-    setSelectedCar(cars.find((c) => String(c.id) === String(carId)) || null);
+
+    const car = cars.find((c) => String(c.id) === String(carId));
+
+    setSelectedCar(car || null);
+
+    setCustomer((prev) => ({
+      ...prev,
+      customerChoosenCar: car ? car.carName : "",
+    }));
   };
 
   /* -------------------- VALIDATION -------------------- */
@@ -151,7 +158,6 @@ const RentNow = () => {
                 ["Mobile Number", "customerMobile"],
                 ["Email", "customerEmail"],
                 ["Residential Address", "customerAddress"],
-                ["PAN Number", "customerPAN"],
               ].map(([label, name]) => (
                 <div key={name}>
                   <Label className="mb-2 ms-1">{label}</Label>
@@ -165,6 +171,23 @@ const RentNow = () => {
                   )}
                 </div>
               ))}
+
+              <div>
+                <Label className="mb-2 ms-1">PAN Number</Label>
+                <Input
+                  name="customerPAN"
+                  value={customer.customerPAN}
+                  onChange={handleChange}
+                />
+                <p className="text-xs mt-2 ms-2 text-green-600">
+                  FORMAT : ABCDE1234F
+                </p>
+                {errors.customerPAN && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.customerPAN}
+                  </p>
+                )}
+              </div>
 
               <div>
                 <Label className="mb-2 ms-1">Gender</Label>

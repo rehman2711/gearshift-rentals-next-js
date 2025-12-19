@@ -15,10 +15,30 @@ const About = () => {
   if (showLoader) return <Loader />;
 
   const numarr = [
-    { id: 1, num: "10+", word: "Years of Experience" },
-    { id: 2, num: "1000+", word: "Happy Clients" },
-    { id: 3, num: "200+", word: "Vehicles" },
-    { id: 4, num: "10+", word: "Locations" },
+    {
+      id: 1,
+      num: "10+",
+      word: "Years of Experience",
+      desc: "Delivering trusted and consistent rental services over the years.",
+    },
+    {
+      id: 2,
+      num: "1000+",
+      word: "Happy Clients",
+      desc: "Customers who rely on Gearshift for quality and reliability.",
+    },
+    {
+      id: 3,
+      num: "200+",
+      word: "Vehicles",
+      desc: "A carefully maintained fleet of premium and modern cars.",
+    },
+    {
+      id: 4,
+      num: "10+",
+      word: "Locations",
+      desc: "Convenient access across key cities and service areas.",
+    },
   ];
 
   const values = [
@@ -26,33 +46,37 @@ const About = () => {
       id: 1,
       img: "/images/about-images/excellence.png",
       heading: "Excellence",
-      text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur, ipsa.",
+      text: "We uphold high standards in our fleet, service quality, and customer experience.",
     },
     {
       id: 2,
       img: "/images/about-images/reliability.png",
       heading: "Reliability",
-      text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur, ipsa.",
+      text: "Customers can depend on us for consistent service and well-maintained vehicles.",
     },
     {
       id: 3,
       img: "/images/about-images/affordability.png",
       heading: "Affordability",
-      text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur, ipsa.",
+      text: "Premium vehicles offered at fair prices with complete pricing transparency.",
     },
     {
       id: 4,
       img: "/images/about-images/loyalty.png",
       heading: "Loyalty",
-      text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur, ipsa.",
+      text: "We build long-term relationships through trust, transparency, and care.",
     },
   ];
 
   const locations = [
-    { id: 1, img: "/images/about-images/ichalkaranji.jpg", lname: "Ichalkaranji" },
+    {
+      id: 1,
+      img: "/images/about-images/ichalkaranji.jpg",
+      lname: "Pune",
+    },
     { id: 2, img: "/images/about-images/dhule.jpg", lname: "Dhule" },
-    { id: 3, img: "/images/about-images/satara.jpg", lname: "Satara" },
-    { id: 4, img: "/images/about-images/nashik.jpg", lname: "Nashik" },
+    { id: 3, img: "/images/about-images/satara.jpg", lname: "Mumbai" },
+    { id: 4, img: "/images/about-images/nashik.jpg", lname: "Dubai" },
   ];
 
   return (
@@ -67,8 +91,9 @@ const About = () => {
                   Our Journey
                 </h1>
                 <p className="text-sm sm:text-base mt-4 text-[#2e1f27]">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Distinctio vitae maiores doloremque.
+                  Gearshift Rentals was built to simplify premium car rentals by
+                  combining quality vehicles with a smooth, reliable booking
+                  experience.
                 </p>
               </div>
 
@@ -77,7 +102,9 @@ const About = () => {
                   Our Mission
                 </h1>
                 <p className="text-sm sm:text-base mt-4 text-[#2e1f27]">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Our mission is to provide a premium, hassle-free car rental
+                  service through well-maintained cars and consistent customer
+                  care.
                 </p>
               </div>
             </div>
@@ -101,9 +128,7 @@ const About = () => {
                   <h5 className="text-base sm:text-lg font-semibold mt-2">
                     {val.word}
                   </h5>
-                  <p className="text-sm mt-3 text-[#2e1f27]">
-                    Lorem ipsum dolor sit amet consectetur.
-                  </p>
+                  <p className="text-sm mt-3 text-[#2e1f27]">{val.desc}</p>
                 </div>
               ))}
             </div>
@@ -125,7 +150,9 @@ const About = () => {
                     Meet Our Founder
                   </h1>
                   <p className="text-sm sm:text-base mt-4 text-[#2e1f27]">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Rehman, Founder of Gearshift Rentals, brings a clear vision
+                    to premium mobility. His focus on quality, transparency, and
+                    service excellence shapes everything we do.
                   </p>
                 </div>
 
@@ -134,7 +161,10 @@ const About = () => {
                     Leadership & Expertise
                   </h1>
                   <p className="text-sm sm:text-base mt-4 text-[#2e1f27]">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Gearshift Rentals is guided by experienced leadership with a
+                    strong focus on quality and reliability. Our expertise
+                    ensures consistent service standards and customer-focused
+                    decision-making.
                   </p>
                 </div>
               </div>

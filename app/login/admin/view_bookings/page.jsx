@@ -37,6 +37,7 @@ const ViewBookings = () => {
       await axios.delete(
         `${process.env.NEXT_PUBLIC_API_URL}/delete-booking/${booking_completed_id}`
       );
+      fetchCustomer();
     } catch (error) {
       console.log("Error While making booking completed");
     }

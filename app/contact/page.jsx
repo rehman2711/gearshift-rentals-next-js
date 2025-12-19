@@ -43,7 +43,7 @@ const Contact = () => {
                 <div className="flex flex-col gap-8 sm:gap-10 mt-8 sm:mt-10">
                   {/* Email */}
                   <div className="flex items-center gap-4">
-                    <div className="bg-yellow-400 p-2 rounded-lg">
+                    <div className="bg-yellow-400/80 hover:bg-purple-400/90 p-2 rounded-lg">
                       <Mail className="text-white" />
                     </div>
                     <div>
@@ -58,15 +58,15 @@ const Contact = () => {
 
                   {/* Phone */}
                   <div className="flex items-center gap-4">
-                    <div className="bg-yellow-400 p-2 rounded-lg">
-                      <Phone className="text-white" />
+                    <div className="bg-yellow-400/80 hover:bg-green-400/90 p-2 rounded-lg">
+                      <Phone className="text-white " />
                     </div>
                     <div>
                       <h5 className="text-sm sm:text-base font-semibold">
                         Phone
                       </h5>
                       <span className="text-sm sm:text-base">
-                        +91 9021100158
+                        +91 9021100100
                       </span>
                     </div>
                   </div>
@@ -119,21 +119,21 @@ const Contact = () => {
 
                     {/* FOOTER */}
                     <div className="md:col-span-2 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mt-4">
-                      <Button className="bg-yellow-500 hover:bg-yellow-600 text-white w-full sm:w-auto">
+                      <Button className="bg-yellow-400/80 hover:bg-yellow-400/90 text-white w-full sm:w-auto">
                         Send Message
                       </Button>
 
                       <div className="flex gap-3 flex-wrap">
-                        <Button className="bg-yellow-400 text-white rounded-full">
+                        <Button className="bg-yellow-400 hover:bg-blue-400 text-white rounded-full">
                           <Twitter />
                         </Button>
-                        <Button className="bg-yellow-400 text-white rounded-full">
+                        <Button className="bg-yellow-400 hover:bg-pink-500 text-white rounded-full">
                           <Instagram />
                         </Button>
-                        <Button className="bg-yellow-400 text-white rounded-full">
+                        <Button className="bg-yellow-400 hover:bg-blue-500 text-white rounded-full">
                           <Facebook />
                         </Button>
-                        <Button className="bg-yellow-400 text-white rounded-full">
+                        <Button className="bg-yellow-400 hover:bg-green-400 text-white rounded-full">
                           <MessageCircle />
                         </Button>
                       </div>

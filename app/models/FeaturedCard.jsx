@@ -46,46 +46,60 @@ export default function FeaturedBellows({ allCarsData = [] }) {
       {/* GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[260px] max-w-7xl mx-auto">
         {allCarsData.map((car) => (
-          <motion.div
-            key={car.id}
-            data-card
-            layout
-            className="relative rounded-2xl border border-gray-200 shadow-xl border-t-2 border-gray-300 overflow-hidden"
-          >
-            <div className="h-full w-full flex flex-col justify-center items-center p-4">
-              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2 text-center">
-                {car.carName}
-              </h3>
+          <div key={car.id}>
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+                const rect = e.currentTarget.getBoundingClientRect();
 
-              <img
-                src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${car.carImageMain}`}
-                alt={car.carName}
-                className="w-full h-36 sm:h-40 object-cover rounded-xl"
-              />
+                setActiveRect(rect);
+                setOpenId(car.id);
+              }}
+              key={car.id}
+            
+            >
+              <motion.div
+                key={car.id}
+                data-card
+                layout
+                className="relative rounded-2xl border border-gray-200 shadow-xl border-t-2 border-gray-300 overflow-hidden"
+              >
+                <div className="h-full w-full flex flex-col justify-center items-center p-4">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2 text-center">
+                    {car.carName}
+                  </h3>
 
-              <div className="mt-3 flex items-center gap-3 flex-wrap justify-center">
-                <Badge className="text-xs sm:text-sm">
-                  {car.carBrandName}
-                </Badge>
+                  <img
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${car.carImageMain}`}
+                    alt={car.carName}
+                    className="w-full h-36 sm:h-40 object-cover rounded-xl"
+                  />
 
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    const rect = e.currentTarget
-                      .closest("[data-card]")
-                      .getBoundingClientRect();
+                  <div className="mt-3 flex items-center gap-3 flex-wrap justify-center">
+                    <Badge className="text-xs sm:text-sm">
+                      {car.carBrandName}
+                    </Badge>
 
-                    setActiveRect(rect);
-                    setOpenId(car.id);
-                  }}
-                >
-                  <Badge className="bg-[#283618]/80 hover:bg-[#283618]/90 rounded-sm text-xs sm:text-sm active:translate-y-2 active:translate-x-1 transition duration-300">
-                    Quick View
-                  </Badge>
-                </button>
-              </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const rect = e.currentTarget
+                          .closest("[data-card]")
+                          .getBoundingClientRect();
+
+                        setActiveRect(rect);
+                        setOpenId(car.id);
+                      }}
+                    >
+                      <Badge className="bg-[#283618]/80 hover:bg-[#283618]/90 rounded-sm text-xs sm:text-sm active:translate-y-2 active:translate-x-1 transition duration-300">
+                        Quick View
+                      </Badge>
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
 
@@ -160,7 +174,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
               />
 
               <div className="flex flex-col justify-between gap-6">
-                <div>
+                <div className="lg:flex flex-col gap-12">
                   <h2 className="text-2xl sm:text-3xl font-bold text-center">
                     {activeCar.carName}
                   </h2>
@@ -179,11 +193,16 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                     ["Fuel", activeCar.carFuelType, "bg-violet-700"],
                     ["Gear", activeCar.carGearSystem, "bg-indigo-600"],
                   ].map(([label, value, color]) => (
-                    <div key={label} className="flex flex-col items-center gap-2">
+                    <div
+                      key={label}
+                      className="flex flex-col items-center gap-2"
+                    >
                       <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">
                         {label}
                       </span>
-                      <Badge className={`px-4 py-1 text-xs sm:text-sm ${color}`}>
+                      <Badge
+                        className={`px-4 py-1 text-xs sm:text-sm ${color}`}
+                      >
                         {value}
                       </Badge>
                     </div>

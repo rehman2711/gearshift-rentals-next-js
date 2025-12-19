@@ -234,10 +234,7 @@ export default function DomeGallery({
       root.style.setProperty("--overlay-blur-color", overlayBlurColor);
       root.style.setProperty("--tile-radius", imageBorderRadius);
       root.style.setProperty("--enlarge-radius", openedImageBorderRadius);
-      root.style.setProperty(
-        "--image-filter",
-        grayscale ? "grayscale(1)" : "none"
-      );
+  
       applyTransform(rotationRef.current.x, rotationRef.current.y);
 
       const enlargedOverlay = viewerRef.current?.querySelector(
@@ -440,7 +437,6 @@ export default function DomeGallery({
           if (pointerTypeRef.current === "touch") unlockScroll();
           if (movedRef.current) lastDragEndAt.current = performance.now();
           movedRef.current = false;
-          grayscale = false;
         }
       },
     },
@@ -666,9 +662,13 @@ export default function DomeGallery({
     const img = document.createElement("img");
     img.src = rawSrc;
     img.alt = rawAlt;
-    img.style.cssText = `width:100%; height:100%; object-fit:cover; filter:${
-      grayscale ? "grayscale(1)" : "none"
-    };`;
+    img.style.cssText = `
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:none;
+`;
+
     overlay.appendChild(img);
     viewerRef.current!.appendChild(overlay);
     const tx0 = tileR.left - frameR.left;
