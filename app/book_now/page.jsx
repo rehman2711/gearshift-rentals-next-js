@@ -16,7 +16,8 @@ const initialCustomerState = {
   customerGender: "",
   customerAddress: "",
   customerPAN: "",
-  customerChoosenCar: "",
+  customerChoosenCar: "",        // ✅ car ID (for select)
+  customerChoosenCarName: "",    // ✅ car name (for backend)
   customerChoosenCarFrom: "",
   customerChoosenCarTo: "",
 };
@@ -72,7 +73,8 @@ const RentNow = () => {
 
     setCustomer((prev) => ({
       ...prev,
-      customerChoosenCar: car ? car.carName : "",
+      customerChoosenCar: carId,                 // ✅ ID for select
+      customerChoosenCarName: car?.carName || "", // ✅ name for backend
     }));
   };
 
@@ -179,14 +181,6 @@ const RentNow = () => {
                   value={customer.customerPAN}
                   onChange={handleChange}
                 />
-                <p className="text-xs mt-2 ms-2 text-green-600">
-                  FORMAT : ABCDE1234F
-                </p>
-                {errors.customerPAN && (
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors.customerPAN}
-                  </p>
-                )}
               </div>
 
               <div>
@@ -201,11 +195,6 @@ const RentNow = () => {
                   <option>Male</option>
                   <option>Female</option>
                 </select>
-                {errors.customerGender && (
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors.customerGender}
-                  </p>
-                )}
               </div>
 
               <div>
@@ -217,7 +206,7 @@ const RentNow = () => {
             <Button
               type="button"
               onClick={() => validateStep1() && setStep(2)}
-              className="w-full bg-yellow-500 hover:bg-yellow-600 text-black"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-4"
             >
               Continue
             </Button>
@@ -248,11 +237,6 @@ const RentNow = () => {
                       </option>
                     ))}
                   </select>
-                  {errors.customerChoosenCar && (
-                    <p className="text-xs text-red-500 mt-1">
-                      {errors.customerChoosenCar}
-                    </p>
-                  )}
                 </div>
 
                 <div>
@@ -275,11 +259,10 @@ const RentNow = () => {
                   />
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <div className="flex gap-4 pt-4">
                   <Button
                     type="button"
                     variant="outline"
-                    className="w-full sm:w-auto"
                     onClick={() => {
                       setStep(1);
                       setSelectedCar(null);
@@ -290,14 +273,14 @@ const RentNow = () => {
 
                   <Button
                     type="submit"
-                    className="w-full sm:w-auto bg-yellow-500 hover:bg-yellow-600 text-black"
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
                   >
                     Submit Booking
                   </Button>
                 </div>
               </div>
 
-              {/* RIGHT — PREVIEW */}
+              {/* RIGHT */}
               <div className="p-5 bg-white/70 rounded-xl shadow-xl border-t flex items-center justify-center">
                 {selectedCar ? (
                   <div className="space-y-3 w-full">
