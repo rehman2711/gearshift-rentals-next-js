@@ -1,0 +1,2 @@
+ALTER TABLE cars 
+MODIFY COLUMN carSeatingCapacity VARCHAR(50) NOT NULL;

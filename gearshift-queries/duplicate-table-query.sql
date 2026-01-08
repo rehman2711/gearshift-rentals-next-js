@@ -1,0 +1,1 @@
+CREATE TABLE bookings_completed LIKE bookings;
