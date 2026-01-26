@@ -5,12 +5,14 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Loader from "@/app/loader";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function LoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showLoader, setShowLoader] = useState(true);
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     const timer = setTimeout(() => setShowLoader(false), 2000);
@@ -89,7 +91,12 @@ export default function LoginPage() {
           </p>
 
           {/* GOOGLE LOGIN */}
-          <Button className="w-full py-4 sm:py-5 bg-neutral-900 border border-neutral-700 rounded-xl flex items-center justify-center gap-3 hover:bg-neutral-800 transition">
+          <Button
+            className="w-full py-4 sm:py-5 bg-neutral-900 border border-neutral-700 rounded-xl flex items-center justify-center gap-3 hover:bg-neutral-800 transition"
+            onClick={() => {
+              signIn("google", { callbackUrl: "/login/admin" });
+            }}
+          >
             <img src="/google-color.svg" className="w-5 h-5" />
             <span className="text-white text-sm sm:text-base">
               Continue with Google

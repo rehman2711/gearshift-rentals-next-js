@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Slackey } from "next/font/google";
+import { Bruno_Ace, Geist, Geist_Mono, Slackey } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/navbar/navbar";
 import { Toaster } from "react-hot-toast";
 import ScrollToTop from "@/app/scroll-to-top";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import SessionWrap from "./components/SessionWrap/SessionWrap";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,6 +23,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const brunoAce = Bruno_Ace({
+  variable: "--font-bruno-ace",
+  subsets: ["latin"],
+  weight: ["400"],
+});
+
 export const metadata: Metadata = {
   title: "GearShift Rentals",
   description: "A car rental service for all your needs.",
@@ -35,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`absolute inset-0 z-0 ${geistSans.variable} ${geistMono.variable} ${slackey.variable} antialiased font-mono`}
+        className={`absolute inset-0 z-0 ${geistSans.variable} ${geistMono.variable} ${brunoAce.variable} ${slackey.variable} antialiased font-mono`}
         style={{
           backgroundImage: `
             repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(75, 85, 99, 0.08) 19px, rgba(75, 85, 99, 0.08) 20px, transparent 20px, transparent 39px, rgba(75, 85, 99, 0.08) 39px, rgba(75, 85, 99, 0.08) 40px),
@@ -46,6 +53,7 @@ export default function RootLayout({
           backgroundSize: "40px 40px, 40px 40px, 40px 40px, 40px 40px",
         }}
       >
+        <SessionWrap>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -58,6 +66,7 @@ export default function RootLayout({
           <Navbar />
           {children}
         </ThemeProvider>
+        </SessionWrap>
       </body>
     </html>
   );

@@ -67,8 +67,9 @@ export default function Home() {
               <span className="text-yellow-400">Porsche 911 Carrera</span>
             </h1>
 
-            <p className="text-base text-green-500 leading-relaxed">
-              Experience the ultimate in speed, luxury, and precision — rent your dream car today.
+            <p className="text-xl text-green-500 leading-relaxed">
+              Drive What You Want ,
+              Drive When You Want . . . 
             </p>
           </div>
         </div>

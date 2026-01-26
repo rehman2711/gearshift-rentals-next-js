@@ -5,7 +5,7 @@ import { Settings } from "lucide-react";
 import MobileMenuToggle from "./mobile-menu-toggle";
 import { Button } from "@/components/retroui/Button";
 import { usePathname, useRouter } from "next/navigation";
-import { ModeToggle } from "@/components/mode-toggle";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 import {WebNavbarItems} from "@/app/configs/web-nav";
 
 export default function Navbar() {
@@ -28,8 +28,7 @@ export default function Navbar() {
             href="/"
             className="flex items-center space-x-2 text-2xl text-black"
           >
-            <Settings />
-            <span className="text-foreground">Gearshift</span>
+            <span className="text-foreground font-brunoAce font-bold ">Gearshift</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -70,7 +69,7 @@ export default function Navbar() {
                 className="text-sm px-4 py-2 bg-green-400/80 border border-gray-300 rounded-md hover:bg-green-400/70 transition-all"
                 onClick={() => router.push("/login")}
               >
-                Login as Admin
+                Login
               </Button>
             )}
 
