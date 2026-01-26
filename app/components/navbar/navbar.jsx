@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { Settings } from "lucide-react";
-import HamburgerMenu from "./HamburgerMenu";
+import MobileMenuToggle from "./mobile-menu-toggle";
 import { Button } from "@/components/retroui/Button";
 import { usePathname, useRouter } from "next/navigation";
+import { ModeToggle } from "@/components/mode-toggle";
+import {WebNavbarItems} from "@/app/configs/web-nav";
 
 export default function Navbar() {
   const router = useRouter();
@@ -17,17 +19,8 @@ export default function Navbar() {
   const isAdminRoute =
     path.startsWith(adminBase) && !blockedRoutes.includes(path);
 
-  /* ---------------- NAV ITEMS ---------------- */
-  const topNavItems = [
-    { title: "Models", href: "/models" },
-    { title: "Gallary", href: "/gallary" },
-    { title: "About", href: "/about" },
-    { title: "Contact us", href: "/contact" },
-    { title: "Book_Now", href: "/book_now" },
-  ];
-
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur">
+    <nav className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur dark:bg-black/80 border-gray-200 dark:border-gray-700">
       <div className="container mx-auto max-w-6xl px-4 lg:px-0">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
@@ -41,7 +34,7 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-10">
-            {topNavItems.map((item) => {
+            {WebNavbarItems.map((item) => {
               const isActive = path === item.href;
 
               return (
@@ -64,7 +57,8 @@ export default function Navbar() {
 
           {/* Mobile Menu */}
           <div className="flex items-center space-x-4 md:hidden">
-            <HamburgerMenu />
+            <MobileMenuToggle />
+            <ModeToggle />
           </div>
 
           {/* Desktop Login / Admin Status */}
@@ -89,6 +83,7 @@ export default function Navbar() {
                 You logged in as admin
               </Button>
             )}
+            <ModeToggle />
           </div>
         </div>
       </div>
