@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { Settings } from "lucide-react";
 import MobileMenuToggle from "./mobile-menu-toggle";
 import { Button } from "@/components/retroui/Button";
 import { usePathname, useRouter } from "next/navigation";
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import {WebNavbarItems} from "@/app/configs/web-nav";
+import { WebNavbarItems } from "@/app/configs/web-nav";
+import { useSession } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Navbar() {
   const router = useRouter();
@@ -14,10 +15,12 @@ export default function Navbar() {
 
   /* ---------------- ADMIN ROUTES ---------------- */
   const adminBase = "/login/admin";
-  const blockedRoutes = ["/login/admin/login"];
 
-  const isAdminRoute =
-    path.startsWith(adminBase) && !blockedRoutes.includes(path);
+  const isAdminRoute = path.startsWith(adminBase);
+
+  const { data: session, status } = useSession();
+
+  // console.log("Navbar session:", session.user.email);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur dark:bg-black/80 border-gray-200 dark:border-gray-700">
@@ -28,7 +31,9 @@ export default function Navbar() {
             href="/"
             className="flex items-center space-x-2 text-2xl text-black"
           >
-            <span className="text-foreground font-brunoAce font-bold ">Gearshift</span>
+            <span className="text-foreground font-brunoAce font-bold ">
+              Gearshift
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -62,7 +67,12 @@ export default function Navbar() {
 
           {/* Desktop Login / Admin Status */}
           <div className="hidden lg:flex items-center space-x-3">
-            {!isAdminRoute && path !== "/login" && (
+            {session?.user?.email ? (
+              <Avatar>
+                <AvatarImage src={session?.user?.image} />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            ) : (
               <Button
                 variant="outline"
                 size="sm"
@@ -70,16 +80,6 @@ export default function Navbar() {
                 onClick={() => router.push("/login")}
               >
                 Login
-              </Button>
-            )}
-
-            {isAdminRoute && (
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-sm px-4 py-2 bg-green-400 border border-gray-300 rounded-md hover:bg-green-500 transition-all cursor-default"
-              >
-                You logged in as admin
               </Button>
             )}
             <ModeToggle />
