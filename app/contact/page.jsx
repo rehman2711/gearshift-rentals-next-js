@@ -9,10 +9,10 @@ import {
   Phone,
   Twitter,
 } from "lucide-react";
-import { Button } from "../../components/ui/button";
-import { Label } from "../../components/ui/label";
-import { Input } from "../../components/ui/input";
-import { Textarea } from "../../components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import Loader from "@/app/loader";
 
 const Contact = () => {
@@ -32,11 +32,11 @@ const Contact = () => {
           <div className="container mx-auto my-8 sm:my-10 py-6 sm:py-10 px-4">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-10">
               {/* LEFT */}
-              <div className="md:col-span-6 bg-white rounded-3xl shadow-lg p-5 sm:p-6">
+              <div className="md:col-span-6 bg-white rounded-3xl shadow-lg p-5 sm:p-6 dark:bg-black/80">
                 <h2 className="font-semibold text-xl sm:text-2xl">
                   Get In Touch
                 </h2>
-                <p className="text-sm sm:text-base mt-3 font-medium text-gray-700 sm:pr-10">
+                <p className="text-sm sm:text-base mt-3 font-medium text-gray-700 dark:text-white sm:pr-10">
                   Have questions or feedback? Contact us — we are here to help!
                 </p>
 
@@ -74,8 +74,8 @@ const Contact = () => {
               </div>
 
               {/* RIGHT — FORM */}
-              <div className="md:col-span-6">
-                <form className="rounded-3xl shadow-lg bg-white">
+              <div className="md:col-span-6 ">
+                <form className="rounded-3xl shadow-lg bg-white dark:bg-black/80">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 sm:p-8">
                     {/* First Name */}
                     <div className="flex flex-col">
