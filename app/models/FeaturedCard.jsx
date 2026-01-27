@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 
 export default function FeaturedBellows({ allCarsData = [] }) {
   const [openId, setOpenId] = useState(null);
@@ -12,6 +13,65 @@ export default function FeaturedBellows({ allCarsData = [] }) {
   const router = useRouter();
 
   const activeCar = allCarsData.find((c) => c.id === openId);
+
+  const { theme } = useTheme();
+  const background =
+  theme === "dark"
+    ? `
+      repeating-linear-gradient(
+        45deg,
+        rgba(115,135,135,0.045) 0,
+        rgba(115,135,135,0.045) 1px,
+        transparent 1px,
+        transparent 30px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        rgba(120,135,145,0.045) 0,
+        rgba(120,135,145,0.045) 1px,
+        transparent 18px,
+        transparent 28px
+      ),
+      radial-gradient(
+        ellipse 120% 80% at 70% 20%,
+        rgba(120,140,140,0.12),
+        transparent 62%
+      ),
+      radial-gradient(
+        ellipse 100% 60% at 30% 10%,
+        rgba(125,140,150,0.14),
+        transparent 72%
+      ),
+      rgb(14,16,17)
+    `
+    : `
+      repeating-linear-gradient(
+        45deg,
+        rgba(125,140,140,0.03) 0,
+        rgba(125,140,140,0.03) 1px,
+        transparent 1px,
+        transparent 32px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        rgba(130,145,155,0.03) 0,
+        rgba(130,145,155,0.03) 1px,
+        transparent 20px,
+        transparent 30px
+      ),
+      radial-gradient(
+        ellipse 120% 80% at 70% 20%,
+        rgba(140,160,155,0.10),
+        transparent 65%
+      ),
+      radial-gradient(
+        ellipse 100% 60% at 30% 10%,
+        rgba(140,155,165,0.12),
+        transparent 75%
+      ),
+      rgb(249,248,246)
+    `;
+
 
   const closeModal = () => {
     setOpenId(null);
@@ -21,27 +81,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
   return (
     <div
       className="relative w-full min-h-screen p-4 sm:p-6 lg:p-8"
-      style={{
-        background: `
-          repeating-linear-gradient(
-            45deg,
-            rgba(16, 185, 129, 0.06) 0,
-            rgba(16, 185, 129, 0.06) 1px,
-            transparent 1px,
-            transparent 20px
-          ),
-          repeating-linear-gradient(
-            -45deg,
-            rgba(6, 182, 212, 0.06) 0,
-            rgba(6, 182, 212, 0.06) 1px,
-            transparent 10px,
-            transparent 15px
-          ),
-          radial-gradient(ellipse 120% 80% at 70% 20%, rgba(16, 185, 129, 0.14), transparent 50%),
-          radial-gradient(ellipse 100% 60% at 30% 10%, rgba(6, 182, 212, 0.16), transparent 60%),
-          rgb(254, 250, 250)
-        `,
-      }}
+      style={{ background }}
     >
       {/* GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[260px] max-w-7xl mx-auto">
@@ -56,16 +96,15 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                 setOpenId(car.id);
               }}
               key={car.id}
-            
             >
               <motion.div
                 key={car.id}
                 data-card
                 layout
-                className="relative rounded-2xl border border-gray-200 shadow-xl border-t-2 border-gray-300 overflow-hidden"
+                className="relative rounded-2xl border border-gray-200 shadow-xl border-t-2 border-gray-300 overflow-hidden dark:bg-black/50"
               >
                 <div className="h-full w-full flex flex-col justify-center items-center p-4">
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2 text-center">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2 text-center dark:text-white">
                     {car.carName}
                   </h3>
 
@@ -91,7 +130,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                         setOpenId(car.id);
                       }}
                     >
-                      <Badge className="bg-[#283618]/80 hover:bg-[#283618]/90 rounded-sm text-xs sm:text-sm active:translate-y-2 active:translate-x-1 transition duration-300">
+                      <Badge className="bg-[#283618]/80 hover:bg-[#283618]/90 dark:bg-yellow-400 rounded-sm text-xs sm:text-sm active:translate-y-2 active:translate-x-1 transition duration-300 dark:text-white">
                         Quick View
                       </Badge>
                     </button>
@@ -144,7 +183,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
               height: activeRect.height,
             }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed z-[999] rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl border border-black/5 overflow-y-auto"
+            className="fixed z-[999] rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl border border-black/5 overflow-y-auto bg-[rgb(254,250,250)] dark:bg-[rgb(33,32,32)]"
             style={{
               background: `
                 repeating-linear-gradient(
@@ -154,8 +193,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                   transparent 1px,
                   transparent 20px
                 ),
-                radial-gradient(ellipse 120% 80% at 70% 20%, rgba(16, 185, 129, 0.14), transparent 50%),
-                rgb(254, 250, 250)
+                radial-gradient(ellipse 120% 80% at 70% 20%, rgba(17, 16, 15, 0.14), transparent 50%),
               `,
             }}
           >
@@ -179,7 +217,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                     {activeCar.carName}
                   </h2>
 
-                  <p className="text-center text-gray-600 mt-4 text-sm sm:text-base">
+                  <p className="text-center text-gray-600 mt-4 text-sm sm:text-base dark:text-gray-300">
                     {activeCar.carSlogan}
                   </p>
                 </div>
@@ -212,7 +250,7 @@ export default function FeaturedBellows({ allCarsData = [] }) {
                 <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
                   <Button
                     onClick={() => router.push(`/models/${activeCar.id}`)}
-                    className="bg-green-500 hover:bg-green-500/80 w-full sm:w-auto"
+                    className="bg-green-500 hover:bg-green-500/80 w-full sm:w-auto text-white"
                   >
                     View Details
                   </Button>

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Loader from "@/app/loader";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import toast from "react-hot-toast";
 
 export default function LoginPage() {
@@ -13,7 +13,6 @@ export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showLoader, setShowLoader] = useState(true);
-  const { data: session, status } = useSession();
 
   useEffect(() => {
     const timer = setTimeout(() => setShowLoader(false), 2000);

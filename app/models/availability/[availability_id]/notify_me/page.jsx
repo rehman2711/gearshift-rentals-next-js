@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Loader from "@/app/loader";
 
@@ -25,7 +25,7 @@ const NotifyMe = () => {
 
   return (
     <div
-      className="flex justify-center items-center min-h-screen px-4 py-8"
+      className="flex justify-center items-center min-h-screen px-4 py-8 dark:bg-black/50 dark:text-white"
       style={{
         background: `
           repeating-linear-gradient(

@@ -45,27 +45,47 @@ export default function RootLayout({
         className={`absolute inset-0 z-0 ${geistSans.variable} ${geistMono.variable} ${brunoAce.variable} ${slackey.variable} antialiased font-mono`}
         style={{
           backgroundImage: `
-            repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(75, 85, 99, 0.08) 19px, rgba(75, 85, 99, 0.08) 20px, transparent 20px, transparent 39px, rgba(75, 85, 99, 0.08) 39px, rgba(75, 85, 99, 0.08) 40px),
-            repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(75, 85, 99, 0.08) 19px, rgba(75, 85, 99, 0.08) 20px, transparent 20px, transparent 39px, rgba(75, 85, 99, 0.08) 39px, rgba(75, 85, 99, 0.08) 40px),
-            radial-gradient(circle at 20px 20px, rgba(55, 65, 81,) 0.12 2px, transparent 2px),
-            radial-gradient(circle at 40px 40px, rgba(55, 65, 81, 0.12) 2px, transparent 2px)
-          `,
-          backgroundSize: "40px 40px, 40px 40px, 40px 40px, 40px 40px",
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 19px,
+      var(--grid-line) 19px,
+      var(--grid-line) 20px,
+      transparent 20px,
+      transparent 39px,
+      var(--grid-line) 39px,
+      var(--grid-line) 40px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 19px,
+      var(--grid-line) 19px,
+      var(--grid-line) 20px,
+      transparent 20px,
+      transparent 39px,
+      var(--grid-line) 39px,
+      var(--grid-line) 40px
+    ),
+    radial-gradient(circle at 20px 20px, var(--grid-dot) 2px, transparent 2px),
+    radial-gradient(circle at 40px 40px, var(--grid-dot) 2px, transparent 2px)
+  `,
+          backgroundSize: "40px 40px",
         }}
       >
         <SessionWrap>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Toaster position="top-right" />
-          <ScrollToTop />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Toaster position="top-right" />
+            <ScrollToTop />
 
-          <Navbar />
-          {children}
-        </ThemeProvider>
+            <Navbar />
+            {children}
+          </ThemeProvider>
         </SessionWrap>
       </body>
     </html>

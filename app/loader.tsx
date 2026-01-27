@@ -8,10 +8,11 @@ export default function Loading() {
         alt="loading"
         height={70}
         width={70}
-        className="w-12 h-12 sm:w-[70px] sm:h-[70px]"
+        className="w-12 h-12 sm:w-[70px] sm:h-[70px] dark:invert"
       />
+      {/* dark:invert => for svg color change which is initially black */}
 
-      <span className="text-black font-black tracking-wide
+      <span className="text-black dark:text-white font-black tracking-wide
         text-3xl
         sm:text-5xl
         md:text-6xl
