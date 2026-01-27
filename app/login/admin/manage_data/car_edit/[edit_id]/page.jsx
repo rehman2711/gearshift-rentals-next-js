@@ -175,7 +175,7 @@ const AdminCarEdit = () => {
       `,
         }}
       >
-        <h1 className="text-black mx-auto text-3xl font-bold tracking-wide">
+        <h1 className="text-black mx-auto text-3xl font-bold tracking-wide dark:text-white">
           EDIT CAR INFORMATION
         </h1>
         <Button
@@ -189,7 +189,7 @@ const AdminCarEdit = () => {
 
       <form
         onSubmit={updateInformation}
-        className="max-w-7xl mx-auto mt-10 bg-white/70 backdrop-blur-xl border rounded-3xl shadow-2xl p-10 space-y-10"
+        className="max-w-7xl mx-auto mt-10 bg-white/70 backdrop-blur-xl border rounded-3xl shadow-2xl p-10 space-y-10 dark:bg-black/50 dark:text-white"
       >
         {/* ================= STEP 1 ================= */}
         {step === 1 && (
@@ -223,7 +223,7 @@ const AdminCarEdit = () => {
                   name="carStatus"
                   value={carInfo?.carStatus}
                   onChange={updateValue}
-                  className="border rounded-lg p-2 text-sm w-full"
+                  className="border rounded-lg p-2 text-sm w-full dark:bg-black/90"
                 >
                   <option value="">Select Status</option>
                   <option value="true">Available</option>
@@ -327,7 +327,7 @@ const AdminCarEdit = () => {
                   name="carCurrency"
                   value={carInfo?.carCurrency}
                   onChange={updateValue}
-                  className="border rounded-lg p-2 text-sm w-full"
+                  className="border rounded-lg p-2 text-sm w-full dark:bg-black/90"
                 >
                   <option value="">Select Currency</option>
                   <option value="RUPEES">RUPEES</option>

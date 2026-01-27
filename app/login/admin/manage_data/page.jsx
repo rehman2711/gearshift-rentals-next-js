@@ -75,7 +75,7 @@ const AdminShowAll = () => {
           `,
         }}
       >
-        <h1 className="text-black text-2xl sm:text-3xl font-bold mx-auto text-center">
+        <h1 className="text-black text-2xl sm:text-3xl font-bold mx-auto text-center dark:text-white">
           All Rental Cars
         </h1>
 
@@ -93,7 +93,7 @@ const AdminShowAll = () => {
         {cars.map((car) => (
           <div
             key={car.id}
-            className="bg-white rounded-2xl shadow-md p-4 relative flex flex-col"
+            className="bg-white rounded-2xl shadow-md p-4 relative flex flex-col border border-gray-300 dark:bg-black dark:border dark:border-gray-700"
           >
             {/* YEAR BADGE */}
             <span className="absolute right-4 top-4 bg-yellow-400 px-3 py-1 rounded-md text-xs sm:text-sm font-semibold">
@@ -125,7 +125,7 @@ const AdminShowAll = () => {
 
             {/* ACTIONS */}
             <div className="mt-5 flex flex-col sm:flex-row gap-3 sm:justify-between">
-              <Button className="bg-green-600 hover:bg-green-700 w-full sm:w-auto">
+              <Button className="bg-green-600 hover:bg-green-700 w-full sm:w-auto dark:text-white">
                 <Link
                   href={`/login/admin/manage_data/car_edit/${car.id}`}
                   className="w-full block text-center"

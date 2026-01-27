@@ -34,7 +34,7 @@ export default function AdminDashboard() {
           `,
         }}
       >
-        <h1 className="text-black text-2xl sm:text-3xl font-bold tracking-wide text-center sm:text-left w-full sm:w-auto">
+        <h1 className="text-black text-2xl sm:text-3xl mx-auto font-bold tracking-wide text-center sm:text-left w-full sm:w-auto dark:text-white">
           Dashboard
         </h1>
 
@@ -78,14 +78,14 @@ export default function AdminDashboard() {
         </h4>
 
         <div className="overflow-x-auto rounded-xl shadow-md border bg-white">
-          <table className="min-w-full text-left">
-            <thead className="bg-gray-100 border-b">
+          <table className="min-w-full text-left dark:bg-black/90">
+            <thead className="bg-gray-100 border-b dark:bg-black/70">
               <tr>
                 {["Booking ID", "Car Model", "Customer", "Status"].map(
                   (h) => (
                     <th
                       key={h}
-                      className="px-4 sm:px-6 py-3 sm:py-4 text-sm font-semibold text-gray-600"
+                      className="px-4 sm:px-6 py-3 sm:py-4 text-sm font-semibold text-gray-600  dark:text-white"
                     >
                       {h}
                     </th>

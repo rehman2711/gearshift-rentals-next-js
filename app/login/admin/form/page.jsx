@@ -169,7 +169,7 @@ const FormCar = () => {
       `,
         }}
       >
-        <h1 className="text-black text-3xl font-bold tracking-wide mx-auto">
+        <h1 className="text-black text-3xl font-bold tracking-wide mx-auto dark:text-white ">
           CAR INFORMATION FORM
         </h1>
         <Button
@@ -183,7 +183,7 @@ const FormCar = () => {
 
       <form
         onSubmit={submitForm}
-        className="max-w-7xl mx-auto mt-10 bg-white/70 backdrop-blur-xl border rounded-3xl shadow-2xl p-10 space-y-10"
+        className="max-w-7xl mx-auto mt-10 bg-white/70 backdrop-blur-xl border rounded-3xl shadow-2xl p-10 space-y-10 dark:bg-black/50 dark:text-white"
       >
         {/* ================= STEP 1 ================= */}
         {step === 1 && (
@@ -216,7 +216,7 @@ const FormCar = () => {
                 <select
                   name="carStatus"
                   onChange={updateValue}
-                  className="border rounded-lg p-1.5 text-sm w-full"
+                  className="border rounded-lg p-1.5 text-sm w-full dark:bg-black/90"
                 >
                   <option value="">Select Status</option>
                   <option value="true">Available</option>
@@ -318,7 +318,7 @@ const FormCar = () => {
                 <select
                   name="carCurrency"
                   onChange={updateValue}
-                  className="border rounded-lg p-2 text-sm w-full rounded-md"
+                  className="border rounded-lg p-2 text-sm w-full rounded-md dark:bg-black/90"
                 >
                   <option value="">Select Currency</option>
                   <option value="RUPEES">RUPEES</option>

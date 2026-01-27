@@ -38,41 +38,8 @@ export default function LoginPage() {
 
   return (
     <div
-      className="min-h-screen w-full bg-white flex flex-col"
-      style={{
-        backgroundImage: `
-          repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 20px,
-            rgba(75, 85, 99, 0.08) 20px,
-            rgba(75, 85, 99, 0.08) 21px
-          ),
-          repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent 30px,
-            rgba(107, 114, 128, 0.06) 30px,
-            rgba(107, 114, 128, 0.06) 31px
-          ),
-          repeating-linear-gradient(
-            60deg,
-            transparent,
-            transparent 40px,
-            rgba(55, 65, 81, 0.05) 40px,
-            rgba(55, 65, 81, 0.05) 41px
-          ),
-          repeating-linear-gradient(
-            150deg,
-            transparent,
-            transparent 35px,
-            rgba(31, 41, 55, 0.04) 35px,
-            rgba(31, 41, 55, 0.04) 36px
-          ),
-          radial-gradient(circle 600px at 0% 200px, #fef3c7, transparent),
-          radial-gradient(circle 600px at 100% 200px, #fef3c7, transparent)
-        `,
-      }}
+      className="min-h-screen w-full flex flex-col"
+      
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 flex flex-col lg:flex-row items-center justify-center lg:justify-between py-16 sm:py-20 gap-12 lg:gap-20">
         {/* RIGHT IMAGE (DESKTOP ONLY) */}
@@ -85,11 +52,11 @@ export default function LoginPage() {
 
         {/* LOGIN FORM */}
         <div className="flex-1 max-w-md w-full space-y-8">
-          <h1 className="text-3xl sm:text-4xl font-semibold text-black">
+          <h1 className="text-3xl sm:text-4xl font-semibold text-black dark:text-white">
             Welcome Back
           </h1>
 
-          <p className="text-neutral-600 text-base sm:text-lg -mt-3">
+          <p className="text-neutral-600 text-base sm:text-lg -mt-3 dark:text-white">
             Login to continue your journey.
           </p>
 
@@ -108,9 +75,9 @@ export default function LoginPage() {
 
           {/* OR */}
           <div className="flex items-center gap-4">
-            <div className="h-px flex-1 bg-neutral-800" />
-            <span className="text-neutral-600 text-sm">or</span>
-            <div className="h-px flex-1 bg-neutral-800" />
+            <div className="h-px flex-1 bg-neutral-800 dark:bg-white" />
+            <span className="text-neutral-600 text-sm dark:text-white">or</span>
+            <div className="h-px flex-1 bg-neutral-800 dark:bg-white" />
           </div>
 
           {/* FORM */}
@@ -121,7 +88,7 @@ export default function LoginPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="w-full px-4 py-4 sm:py-5 bg-transparent border border-neutral-700 rounded-xl outline-none text-black"
+              className="w-full px-4 py-4 sm:py-5 bg- dark:bg-black/60 border border-neutral-700 rounded-xl outline-none text-black dark:text-white"
             />
 
             <Input
@@ -130,13 +97,13 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-4 sm:py-5 bg-transparent border border-neutral-700 rounded-xl outline-none text-black"
+              className="w-full px-4 py-4 sm:py-5 bg-transparent dark:bg-black/60 border border-neutral-700 rounded-xl outline-none text-black dark:text-white"
             />
 
             <div className="text-right">
               <Button
                 type="button"
-                className="text-white hover:text-white text-sm hover:underline underline-offset-4"
+                className="text-white hover:text-white text-sm hover:bg-green-500 hover:underline underline-offset-4 bg-green-400 dark:hover:bg-green-500/80 rounded"
                 onClick={() => router.push("/forgot-password")}
               >
                 Forgot password ?
@@ -151,7 +118,7 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <p className="text-neutral-600 text-sm pt-4 text-center sm:text-left">
+          <p className="text-neutral-600 text-sm pt-4 text-center sm:text-left dark:text-white">
             Don’t have an account?{" "}
             <button
               onClick={() => router.refresh()}

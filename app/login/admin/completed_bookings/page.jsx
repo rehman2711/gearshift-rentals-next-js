@@ -44,7 +44,7 @@ const ViewBookings = () => {
           `,
         }}
       >
-        <h1 className="text-black text-2xl sm:text-3xl font-bold tracking-wide mx-auto text-center">
+        <h1 className="text-black text-2xl sm:text-3xl font-bold tracking-wide mx-auto text-center dark:text-white">
           ALL APPROVED BOOKINGS
         </h1>
 
@@ -62,7 +62,7 @@ const ViewBookings = () => {
         {viewCustomerBookings.map((val) => (
           <div
             key={val.id}
-            className="bg-white shadow-lg rounded-3xl p-5 border border-gray-200 hover:shadow-xl transition flex flex-col"
+            className="bg-white shadow-lg rounded-3xl p-5 border border-gray-200 hover:shadow-xl transition flex flex-col dark:bg-black dark:border dark:border-gray-700"
           >
             <div className="text-center">
               <img
@@ -71,11 +71,11 @@ const ViewBookings = () => {
                 className="w-24 h-24 rounded-full mx-auto object-cover mb-3"
               />
 
-              <h4 className="text-lg sm:text-xl font-semibold text-blue-600 mb-3">
+              <h4 className="text-lg sm:text-xl font-semibold text-blue-600 mb-3 dark:text-green-500">
                 {val.customerName}
               </h4>
 
-              <div className="text-left text-gray-700 space-y-1 text-sm sm:text-base break-words">
+              <div className="text-left text-gray-700 space-y-1 text-sm sm:text-base break-words dark:text-white">
                 <p>
                   <span className="font-semibold">Mobile:</span>{" "}
                   {val.customerMobile}
