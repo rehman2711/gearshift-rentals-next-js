@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Loader from "@/app/loader";
 import { signIn, signOut, useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -26,7 +27,10 @@ export default function LoginPage() {
 
     // ADMIN CHECK
     if (username === "admin" && password === "admin") {
+      signOut({ redirect: false });
       router.push("/login/admin");
+      toast.success("Admin login detected. Redirecting...", { duration: 4000 });
+
       return;
     }
 
@@ -94,7 +98,7 @@ export default function LoginPage() {
           <Button
             className="w-full py-4 sm:py-5 bg-neutral-900 border border-neutral-700 rounded-xl flex items-center justify-center gap-3 hover:bg-neutral-800 transition"
             onClick={() => {
-              signIn("google", { callbackUrl: "/login/admin" });
+              signIn("google", { callbackUrl: "/" });
             }}
           >
             <img src="/google-color.svg" className="w-5 h-5" />
