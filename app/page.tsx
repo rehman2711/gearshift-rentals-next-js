@@ -1,33 +1,28 @@
 import { Suspense } from "react";
 import WebhookTrigger from "@/app/webhook_trigger";
+import Video from "@/app/components/Video";
 
 export default function Home() {
-
-
   return (
     <div className="w-full h-screen bg-background flex items-center justify-center">
       <div className="w-[85%] h-[70%] grid grid-cols-4">
         <div className="col-span-3 flex items-center justify-center">
           <div className="w-full h-full flex gap-4 group overflow-hidden">
             {/* Video Component*/}
-            {["/car-bg.mp4", "/car-bg.mp4", "/car-bg.mp4"].map((src, index) => {
-              return (
-                <div
-                  className="flex-1 overflow-hidden transition-all duration-800 ease-in-out group-hover:flex-[0.8] hover:flex-[8]"
-                  key={index}
-                >
-                  <Suspense>
-                    <video
-                      src={src}
-                      autoPlay
-                      muted
-                      loop
-                      className="w-full h-full object-cover"
-                    />
-                  </Suspense>
-                </div>
-              );
-            })}
+            {["/car-video1.mp4", "/car-video2.mp4", "/car-video3.mp4"].map(
+              (src, index) => {
+                return (
+                  <div
+                    className="flex-1 overflow-hidden transition-all duration-800 ease-in-out group-hover:flex-[0.8] hover:flex-[8]"
+                    key={index}
+                  >
+                    <Suspense>
+                      <Video src={src} />
+                    </Suspense>
+                  </div>
+                );
+              },
+            )}
           </div>
         </div>
 
@@ -45,7 +40,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
 
       <div className="absolute inset-0 z-10 pointer-events-none">
         <WebhookTrigger />
