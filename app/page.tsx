@@ -12,9 +12,7 @@ export default function Home() {
             <h1 className="text-3xl md:text-5xl font-extrabold leading-tight">
               Drive the Legend
               <br />
-              <span className="text-yellow-400">
-                Porsche 911 Carrera
-              </span>
+              <span className="text-yellow-400">Porsche 911 Carrera</span>
             </h1>
 
             <p className="text-base md:text-xl text-green-500 leading-relaxed">
@@ -35,11 +33,23 @@ export default function Home() {
               md:group
             "
           >
-            {["/car-video1.mp4", "/car-video2.mp4", "/car-video3.mp4"].map(
-              (src, index) => (
-                <div
-                  key={index}
-                  className="
+            {[
+              {
+                src: "/car-video1.mp4",
+                poster: "/thumbnail/car-video1-poster.jpg",
+              },
+              {
+                src: "/car-video2.mp4",
+                poster: "/thumbnail/car-video2-poster.jpg",
+              },
+              {
+                src: "/car-video3.mp4",
+                poster: "/thumbnail/car-video3-poster.jpg",
+              },
+            ].map((video, index) => (
+              <div
+                key={index}
+                className="
                     w-full
                     h-[180px] sm:h-[220px] md:h-full
                     md:flex-1
@@ -50,13 +60,12 @@ export default function Home() {
                     md:group-hover:flex-[0.8]
                     md:hover:flex-[8]
                   "
-                >
-                  <Suspense>
-                    <Video src={src} />
-                  </Suspense>
-                </div>
-              )
-            )}
+              >
+                <Suspense>
+                  <Video src={video.src} poster={video.poster} />
+                </Suspense>
+              </div>
+            ))}
           </div>
         </div>
       </div>

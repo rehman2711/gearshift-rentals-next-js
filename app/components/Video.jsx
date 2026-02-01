@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 
-export default function HoverVideo({ src }) {
+export default function HoverVideo({ src, poster }) {
   const videoRef = useRef(null);
 
   const handleMouseEnter = () => {
@@ -9,8 +9,7 @@ export default function HoverVideo({ src }) {
     if (!video) return;
 
     video.currentTime = 0;
-    video.play().catch(() => {
-    });
+    video.play().catch(() => {});
   };
 
   const handleMouseLeave = () => {
@@ -25,6 +24,7 @@ export default function HoverVideo({ src }) {
     <video
       ref={videoRef}
       src={src}
+      poster={poster}
       muted
       loop
       playsInline
