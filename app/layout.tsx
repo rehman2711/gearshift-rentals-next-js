@@ -5,7 +5,7 @@ import Navbar from "./components/navbar/navbar";
 import { Toaster } from "react-hot-toast";
 import ScrollToTop from "@/app/scroll-to-top";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import SessionWrap from "./components/SessionWrap/SessionWrap";
+import { AuthProvider } from "../contexts/authContext/page";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -73,20 +73,20 @@ export default function RootLayout({
           backgroundSize: "40px 40px",
         }}
       >
-        <SessionWrap>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Toaster position="top-right" />
-            <ScrollToTop />
+        <AuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Toaster position="top-right" />
+              <ScrollToTop />
 
-            <Navbar />
-            {children}
-          </ThemeProvider>
-        </SessionWrap>
+              <Navbar />
+              {children}
+            </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

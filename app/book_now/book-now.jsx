@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import Loader from "@/app/loader";
 import toast from "react-hot-toast";
 import { redirect, useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/contexts/authContext/page";
 
 const initialCustomerState = {
   customerImage: null,
@@ -26,6 +26,8 @@ const initialCustomerState = {
 const BookNow = () => {
   const router = useRouter();
 
+  const { userLoggedIn } = useAuth();
+
   const [cars, setCars] = useState([]);
   const [selectedCar, setSelectedCar] = useState(null);
   const [customer, setCustomer] = useState(initialCustomerState);
@@ -33,13 +35,11 @@ const BookNow = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data: session } = useSession();
-
   //   console.log(session);
 
   /* -------------------- FETCH CARS -------------------- */
   useEffect(() => {
-    if (!session) {
+    if (!userLoggedIn) {
       toast.error(
         <span className="font-sans">You must be logged in to book a car</span>,
       );

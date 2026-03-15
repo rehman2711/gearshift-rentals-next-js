@@ -13,7 +13,6 @@ import {
   LogOut,
 } from "lucide-react";
 import SidebarLink from "./sidebar-links";
-import { signOut } from "next-auth/react";
 
 const Sidebar = ({ children }) => {
   const [open, setOpen] = useState(true); // desktop collapse
@@ -21,9 +20,7 @@ const Sidebar = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleLogout = () => {
-    signOut({ redirect: true, callbackUrl: "/login" });
-  };
+
   return (
     <>
       <div className="min-h-screen relative">

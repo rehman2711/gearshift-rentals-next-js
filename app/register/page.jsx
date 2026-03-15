@@ -3,28 +3,23 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
-import {
-  doSignInWithEmailAndPassword,
-  doSignInWithGoogle,
-} from "@/firebase/auth";
-import { useAuth } from "@/contexts/authContext/page";
+import { useAuth } from "../../contexts/authContext/page";
+import { doCreateUserWithEmailAndPassword } from "../../firebase/auth";
 
-const Login = () => {
+const Register = () => {
   const router = useRouter();
-  const { userLoggedIn, currentUser } = useAuth();
-
-  console.log(currentUser);
+  const { userLoggedIn } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
-
   const [errorMessage, setErrorMessage] = useState("");
 
   // ---------- redirect ----------
@@ -39,30 +34,38 @@ const Login = () => {
     if (!err?.code) return "Something went wrong";
 
     switch (err.code) {
+      case "auth/email-already-in-use":
+        return "Email already registered";
       case "auth/invalid-email":
         return "Invalid email";
-      case "auth/user-not-found":
-        return "User not found";
-      case "auth/wrong-password":
-        return "Wrong password";
+      case "auth/weak-password":
+        return "Password should be at least 6 characters";
       default:
-        return "Login failed";
+        return "Registration failed";
     }
   };
 
-  // ---------- email login ----------
+  // ---------- submit ----------
   const onSubmit = useCallback(
     async (e) => {
       e.preventDefault();
 
-      if (loading || googleLoading) return;
+      if (loading) return;
 
       setErrorMessage("");
+
+      if (password !== confirmPassword) {
+        setErrorMessage("Passwords do not match");
+        return;
+      }
 
       try {
         setLoading(true);
 
-        await doSignInWithEmailAndPassword(email.trim(), password.trim());
+        await doCreateUserWithEmailAndPassword(
+          email.trim(),
+          password.trim()
+        );
 
         router.replace("/");
       } catch (err) {
@@ -71,31 +74,7 @@ const Login = () => {
         setLoading(false);
       }
     },
-    [email, password, loading, googleLoading, router],
-  );
-
-  // ---------- google ----------
-  const onGoogleSignIn = useCallback(
-    async (e) => {
-      e.preventDefault();
-
-      if (loading || googleLoading) return;
-
-      setErrorMessage("");
-
-      try {
-        setGoogleLoading(true);
-
-        await doSignInWithGoogle();
-
-        router.replace("/");
-      } catch (err) {
-        setErrorMessage(getErrorMessage(err));
-      } finally {
-        setGoogleLoading(false);
-      }
-    },
-    [loading, googleLoading, router],
+    [email, password, confirmPassword, loading, router],
   );
 
   return (
@@ -119,31 +98,53 @@ const Login = () => {
           dark:border-gray-700
         "
       >
-        <h3 className="text-xl font-semibold text-center">Welcome Back</h3>
+        <h3 className="text-xl font-semibold text-center">
+          Create Account
+        </h3>
 
         {/* form */}
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <Label className="text-sm font-semibold mb-2">Email</Label>
+            <Label className="text-sm font-semibold mb-2">
+              Email
+            </Label>
 
             <Input
               type="email"
               required
-              disabled={loading || googleLoading}
+              disabled={loading}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
           <div>
-            <Label className="text-sm font-semibold mb-2">Password</Label>
+            <Label className="text-sm font-semibold mb-2">
+              Password
+            </Label>
 
             <Input
               type="password"
               required
-              disabled={loading || googleLoading}
+              disabled={loading}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <Label className="text-sm font-semibold mb-2">
+              Confirm Password
+            </Label>
+
+            <Input
+              type="password"
+              required
+              disabled={loading}
+              value={confirmPassword}
+              onChange={(e) =>
+                setConfirmPassword(e.target.value)
+              }
             />
           </div>
 
@@ -155,7 +156,7 @@ const Login = () => {
 
           <Button
             type="submit"
-            disabled={loading || googleLoading}
+            disabled={loading}
             className="
               w-full py-2 rounded-lg text-white font-medium
               bg-indigo-600 hover:bg-indigo-700
@@ -163,34 +164,22 @@ const Login = () => {
               transition
             "
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Signing up..." : "Sign Up"}
           </Button>
         </form>
 
         <p className="text-sm text-center">
-          Don't have an account?{" "}
-          <Link href="/register" className="font-semibold hover:underline">
-            Sign up
+          Already have an account?{" "}
+          <Link
+            href="/login"
+            className="font-semibold hover:underline"
+          >
+            Sign in
           </Link>
         </p>
-
-        {/* divider */}
-        <div className="flex items-center gap-2">
-          <div className="flex-1 border-b dark:border-gray-600" />
-          <span className="text-sm">OR</span>
-          <div className="flex-1 border-b dark:border-gray-600" />
-        </div>
-
-        {/* google */}
-        <div className="flex justify-center items-center">
-          {" "}
-          <Button onClick={onGoogleSignIn} disabled={loading || googleLoading}>
-            {googleLoading ? "Signing in..." : "Continue with Google"}
-          </Button>
-        </div>
       </div>
     </main>
   );
 };
 
-export default Login;
+export default Register;

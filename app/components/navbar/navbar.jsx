@@ -2,23 +2,33 @@
 
 import Link from "next/link";
 import MobileMenuToggle from "./mobile-menu-toggle";
-import { Button } from "@/components/retroui/Button";
 import { usePathname, useRouter } from "next/navigation";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { WebNavbarItems } from "@/app/configs/web-nav";
-import { useSession } from "next-auth/react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/contexts/authContext/page";
+import { doSignOut, doPasswordReset } from "@/firebase/auth";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import toast from "react-hot-toast";
 
 export default function Navbar() {
   const router = useRouter();
   const path = usePathname();
 
+  const { userLoggedIn, currentUser } = useAuth();
+
   /* ---------------- ADMIN ROUTES ---------------- */
   const adminBase = "/login/admin";
 
   const isAdminRoute = path.startsWith(adminBase);
-
-  const { data: session, status } = useSession();
 
   // console.log("Navbar session:", session.user.email);
 
@@ -67,18 +77,54 @@ export default function Navbar() {
 
           {/* Desktop Login / Admin Status */}
           <div className="hidden lg:flex items-center space-x-3">
-            {session?.user?.email ? (
-              <Avatar>
-                <AvatarImage src={session?.user?.image} />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
+            {userLoggedIn ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline">
+                    {currentUser?.displayName || "User"}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel className="flex justify-between items-center px-4">
+                      <span> My Account</span>{" "}
+                    </DropdownMenuLabel>
+                  </DropdownMenuGroup>
+                  <DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      Email : {currentUser?.email}
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  {/* <DropdownMenuSeparator /> */}
+                  <div className="flex justify-between px-4 my-2">
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      className="hover:bg-red-600/80"
+                      onClick={() => {
+                        doSignOut();
+                      }}
+                    >
+                      Logout
+                    </Button>
+                    <Button
+                      variant="default"
+                      className="bg-green-400 hover:bg-green-500/90"
+                      size="sm"
+                      onClick={() => {
+                        doPasswordReset(currentUser?.email);
+                        router.push("/");
+                        toast.success("Password Link Sent On Email");
+                      }}
+                    >
+                      Reset Password
+                    </Button>
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-sm px-4 py-2 bg-green-400/80 border border-gray-300 rounded-md hover:bg-green-400/70 transition-all"
-                onClick={() => router.push("/login")}
-              >
+              <Button variant="outline" onClick={() => router.push("/login")}>
                 Login
               </Button>
             )}

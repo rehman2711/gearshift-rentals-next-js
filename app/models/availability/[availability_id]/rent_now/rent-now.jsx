@@ -8,18 +8,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Loader from "@/app/loader";
 import toast from "react-hot-toast";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/contexts/authContext/page";
 
 export default function RentTheCarNow() {
   const router = useRouter();
   const params = useParams();
 
-  const { data: session } = useSession();
+  const { userLoggedIn } = useAuth();
 
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
-  const [selectedCar, setSelectedCar] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedCar, setSelectedCar] = useState(null);
 
   const [customer, setCustomer] = useState({
     customerName: "",
@@ -36,7 +36,7 @@ export default function RentTheCarNow() {
 
   /* ---------------- FETCH SELECTED CAR ---------------- */
   useEffect(() => {
-    if (!session) {
+    if (!userLoggedIn) {
       toast.error(
         <span className="font-sans">You must be logged in to book a car</span>,
       );
