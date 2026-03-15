@@ -72,7 +72,63 @@ export default function Navbar() {
           {/* Mobile Menu */}
           <div className="flex items-center space-x-4 md:hidden">
             <MobileMenuToggle />
-            <ModeToggle />
+            <div className="flex items-center space-x-3">
+              {userLoggedIn ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline">
+                      {currentUser?.displayName || "User"}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuGroup>
+                      <DropdownMenuLabel className="flex justify-between items-center px-4">
+                        <span> My Account</span>{" "}
+                        <span className="md:hidden">
+                          {" "}
+                          <ModeToggle />
+                        </span>
+                      </DropdownMenuLabel>
+                    </DropdownMenuGroup>
+                    <DropdownMenuGroup>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        Email : {currentUser?.email}
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                    {/* <DropdownMenuSeparator /> */}
+                    <div className="flex justify-between px-4 my-2">
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        className="hover:bg-red-600/80"
+                        onClick={() => {
+                          doSignOut();
+                        }}
+                      >
+                        Logout
+                      </Button>
+                      <Button
+                        variant="default"
+                        className="bg-green-400 hover:bg-green-500/90"
+                        size="sm"
+                        onClick={() => {
+                          doPasswordReset(currentUser?.email);
+                          router.push("/");
+                          toast.success("Password Link Sent On Email");
+                        }}
+                      >
+                        Reset Password
+                      </Button>
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button variant="outline" onClick={() => router.push("/login")}>
+                  Login
+                </Button>
+              )}
+            </div>{" "}
           </div>
 
           {/* Desktop Login / Admin Status */}
