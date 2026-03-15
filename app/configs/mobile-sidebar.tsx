@@ -18,7 +18,7 @@ export const sideNavItems = [
     children: [{ title: "Book_Now", href: "/book_now" }],
   },
   {
-    title: "Inquiry",
-    children: [{ title: "Login_as_Admin", href: "/login" }],
+    title: "Login",
+    children: [{ title: "Signup", href: "/register" }, { title: "Signin", href: "/login" }],
   },
 ];
