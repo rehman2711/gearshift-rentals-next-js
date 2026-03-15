@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { getAuth } from "firebase/auth";
+
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -11,13 +13,12 @@ import {
   doSignInWithEmailAndPassword,
   doSignInWithGoogle,
 } from "@/firebase/auth";
+
 import { useAuth } from "@/contexts/authContext/page";
 
 const Login = () => {
   const router = useRouter();
-  const { userLoggedIn, currentUser } = useAuth();
-
-  console.log(currentUser);
+  const { userLoggedIn } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,6 +27,11 @@ const Login = () => {
   const [googleLoading, setGoogleLoading] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
+
+  // set cookie function
+  const setTokenCookie = (token) => {
+    document.cookie = `token=${token}; path=/`;
+  };
 
   // ---------- redirect ----------
   useEffect(() => {
@@ -64,6 +70,16 @@ const Login = () => {
 
         await doSignInWithEmailAndPassword(email.trim(), password.trim());
 
+        // ✅ get token
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if (user) {
+          const token = await user.getIdToken();
+
+          setTokenCookie(token);
+        }
+
         router.replace("/");
       } catch (err) {
         setErrorMessage(getErrorMessage(err));
@@ -88,6 +104,16 @@ const Login = () => {
 
         await doSignInWithGoogle();
 
+        // get token by google login
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if (user) {
+          const token = await user.getIdToken();
+
+          setTokenCookie(token);
+        }
+
         router.replace("/");
       } catch (err) {
         setErrorMessage(getErrorMessage(err));
@@ -103,20 +129,13 @@ const Login = () => {
       className="
         w-full min-h-screen flex items-center justify-center
         bg-gray-100 dark:bg-black
-        transition-colors duration-300
       "
     >
       <div
         className="
           w-96 p-6 rounded-xl border shadow-xl space-y-5
-
-          bg-white
-          text-gray-800
-          border-gray-200
-
-          dark:bg-black
-          dark:text-gray-100
-          dark:border-gray-700
+          bg-white text-gray-800 border-gray-200
+          dark:bg-black dark:text-gray-100 dark:border-gray-700
         "
       >
         <h3 className="text-xl font-semibold text-center">Welcome Back</h3>
@@ -124,8 +143,7 @@ const Login = () => {
         {/* form */}
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <Label className="text-sm font-semibold mb-2">Email</Label>
-
+            <Label>Email</Label>
             <Input
               type="email"
               required
@@ -136,8 +154,7 @@ const Login = () => {
           </div>
 
           <div>
-            <Label className="text-sm font-semibold mb-2">Password</Label>
-
+            <Label>Password</Label>
             <Input
               type="password"
               required
@@ -148,46 +165,35 @@ const Login = () => {
           </div>
 
           {errorMessage && (
-            <div className="text-red-500 text-sm font-medium">
-              {errorMessage}
-            </div>
+            <div className="text-red-500 text-sm">{errorMessage}</div>
           )}
 
           <Button
             type="submit"
             disabled={loading || googleLoading}
-            className="
-              w-full py-2 rounded-lg text-white font-medium
-              bg-indigo-600 hover:bg-indigo-700
-              disabled:bg-gray-400
-              transition
-            "
+            className="w-full"
           >
             {loading ? "Signing in..." : "Sign In"}
           </Button>
         </form>
 
         <p className="text-sm text-center">
-          Don't have an account?{" "}
-          <Link href="/register" className="font-semibold hover:underline">
-            Sign up
-          </Link>
+          Don't have an account? <Link href="/register">Sign up</Link>
         </p>
 
-        {/* divider */}
         <div className="flex items-center gap-2">
-          <div className="flex-1 border-b dark:border-gray-600" />
-          <span className="text-sm">OR</span>
-          <div className="flex-1 border-b dark:border-gray-600" />
+          <div className="flex-1 border-b" />
+          <span>OR</span>
+          <div className="flex-1 border-b" />
         </div>
 
-        {/* google */}
-        <div className="flex justify-center items-center">
-          {" "}
-          <Button onClick={onGoogleSignIn} disabled={loading || googleLoading}>
-            {googleLoading ? "Signing in..." : "Continue with Google"}
-          </Button>
-        </div>
+        <Button
+          onClick={onGoogleSignIn}
+          disabled={loading || googleLoading}
+          className="w-full"
+        >
+          {googleLoading ? "Signing in..." : "Continue with Google"}
+        </Button>
       </div>
     </main>
   );

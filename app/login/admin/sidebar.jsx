@@ -13,13 +13,13 @@ import {
   LogOut,
 } from "lucide-react";
 import SidebarLink from "./sidebar-links";
+import { doSignOut } from "@/firebase/auth";
 
 const Sidebar = ({ children }) => {
   const [open, setOpen] = useState(true); // desktop collapse
   const [mobileOpen, setMobileOpen] = useState(false); // mobile drawer
   const router = useRouter();
   const pathname = usePathname();
-
 
   return (
     <>
@@ -146,7 +146,9 @@ const Sidebar = ({ children }) => {
 
           {/* Logout */}
           <div
-            onClick={handleLogout}
+            onClick={() => {
+              doSignOut();
+            }}
             className="p-4 border-t cursor-pointer hover:bg-red-600 hover:text-white transition flex items-center gap-3"
           >
             {!open ? (
