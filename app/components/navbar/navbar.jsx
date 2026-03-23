@@ -26,7 +26,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 import toast from "react-hot-toast";
 
@@ -34,7 +34,7 @@ export default function Navbar() {
   const router = useRouter();
   const path = usePathname();
 
-  const { userLoggedIn, currentUser } = useAuth();
+  const { userLoggedIn, currentUser, loading } = useAuth();
 
   /* ---------------- ADMIN ROUTES ---------------- */
   const adminBase = "/login/admin";
@@ -88,7 +88,7 @@ export default function Navbar() {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline">
-                      {currentUser?.displayName || "User"}
+                      {loading ? "User" : currentUser?.displayName}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
@@ -103,6 +103,9 @@ export default function Navbar() {
                     </DropdownMenuGroup>
                     <DropdownMenuGroup>
                       <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        Username : {currentUser?.displayName}
+                      </DropdownMenuItem>
                       <DropdownMenuItem>
                         Email : {currentUser?.email}
                       </DropdownMenuItem>
@@ -170,8 +173,7 @@ export default function Navbar() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline">
-                    {currentUser?.displayName ||
-                      `User_${Math.floor(Math.random() * 10000)}`}{" "}
+                    {currentUser?.displayName || `User`}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -182,6 +184,9 @@ export default function Navbar() {
                   </DropdownMenuGroup>
                   <DropdownMenuGroup>
                     <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                        Username : {currentUser?.displayName}
+                      </DropdownMenuItem>
                     <DropdownMenuItem>
                       Email : {currentUser?.email}
                     </DropdownMenuItem>
