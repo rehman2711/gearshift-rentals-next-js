@@ -18,7 +18,7 @@ import { useAuth } from "@/contexts/authContext/page";
 
 const Login = () => {
   const router = useRouter();
-  const { userLoggedIn } = useAuth();
+  const { userLoggedIn, currentUser } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,6 +37,7 @@ const Login = () => {
   useEffect(() => {
     if (userLoggedIn) {
       router.replace("/");
+      console.log(currentUser);
     }
   }, [userLoggedIn, router]);
 
@@ -143,7 +144,7 @@ const Login = () => {
         {/* form */}
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <Label>Email</Label>
+            <Label className="text-sm font-semibold mb-2">Email</Label>
             <Input
               type="email"
               required
@@ -154,7 +155,7 @@ const Login = () => {
           </div>
 
           <div>
-            <Label>Password</Label>
+            <Label className="text-sm font-semibold mb-2">Password</Label>
             <Input
               type="password"
               required
@@ -178,7 +179,11 @@ const Login = () => {
         </form>
 
         <p className="text-sm text-center">
-          Don't have an account? <Link href="/register">Sign up</Link>
+          Don't have an account?{" "}
+          <Link href="/register">
+            {" "}
+            <span className="hover:underline underline-offset-4">Sign up</span>
+          </Link>
         </p>
 
         <div className="flex items-center gap-2">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -11,10 +11,14 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "../../contexts/authContext/page";
 import { doCreateUserWithEmailAndPassword } from "../../firebase/auth";
 
+import { updateProfile } from "firebase/auth";
+import { auth } from "../../firebase/firebase.config"; // make sure this exists
+
 const Register = () => {
   const router = useRouter();
   const { userLoggedIn } = useAuth();
 
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -62,10 +66,15 @@ const Register = () => {
       try {
         setLoading(true);
 
-        await doCreateUserWithEmailAndPassword(
+        const res = await doCreateUserWithEmailAndPassword(
           email.trim(),
           password.trim()
         );
+
+        // ✅ set displayName after signup
+        await updateProfile(auth.currentUser, {
+          displayName: username.trim(),
+        });
 
         router.replace("/");
       } catch (err) {
@@ -74,7 +83,7 @@ const Register = () => {
         setLoading(false);
       }
     },
-    [email, password, confirmPassword, loading, router],
+    [email, password, confirmPassword, username, loading, router]
   );
 
   return (
@@ -88,22 +97,32 @@ const Register = () => {
       <div
         className="
           w-96 p-6 rounded-xl border shadow-xl space-y-5
-
-          bg-white
-          text-gray-800
-          border-gray-200
-
-          dark:bg-black
-          dark:text-gray-100
-          dark:border-gray-700
+          bg-white text-gray-800 border-gray-200
+          dark:bg-black dark:text-gray-100 dark:border-gray-700
         "
       >
         <h3 className="text-xl font-semibold text-center">
           Create Account
         </h3>
 
-        {/* form */}
         <form onSubmit={onSubmit} className="space-y-4">
+
+          {/* Username */}
+          <div>
+            <Label className="text-sm font-semibold mb-2">
+              Username
+            </Label>
+
+            <Input
+              type="text"
+              required
+              disabled={loading}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+
+          {/* Email */}
           <div>
             <Label className="text-sm font-semibold mb-2">
               Email
@@ -118,6 +137,7 @@ const Register = () => {
             />
           </div>
 
+          {/* Password */}
           <div>
             <Label className="text-sm font-semibold mb-2">
               Password
@@ -132,6 +152,7 @@ const Register = () => {
             />
           </div>
 
+          {/* Confirm Password */}
           <div>
             <Label className="text-sm font-semibold mb-2">
               Confirm Password
@@ -172,7 +193,7 @@ const Register = () => {
           Already have an account?{" "}
           <Link
             href="/login"
-            className="font-semibold hover:underline"
+            className="font-semibold hover:underline underline-offset-4"
           >
             Sign in
           </Link>

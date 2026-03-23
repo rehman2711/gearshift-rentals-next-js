@@ -80,7 +80,7 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <Toaster position="top-right" />
+              <Toaster position="bottom-left" />
               <ScrollToTop />
 
               <Navbar />

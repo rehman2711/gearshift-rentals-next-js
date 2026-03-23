@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 
-export function middleware(req) {
+export function proxy(req) {
+  console.log("ALL COOKIES:", req.cookies.getAll());
+
   const token = req.cookies.get("token")?.value;
 
-  // console.log("token:", token);
+  console.log("TOKEN:", token);
 
   if (!token) {
-    return NextResponse.redirect(
-      new URL("/login", req.url)
-    );
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
   return NextResponse.next();

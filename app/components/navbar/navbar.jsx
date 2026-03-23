@@ -17,6 +17,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import toast from "react-hot-toast";
 
 export default function Navbar() {
@@ -28,7 +39,7 @@ export default function Navbar() {
   /* ---------------- ADMIN ROUTES ---------------- */
   const adminBase = "/login/admin";
 
-  const isAdminRoute = path.startsWith(adminBase);
+  // const isAdminRoute = path.startsWith(adminBase);
 
   // console.log("Navbar session:", session.user.email);
 
@@ -98,16 +109,38 @@ export default function Navbar() {
                     </DropdownMenuGroup>
                     {/* <DropdownMenuSeparator /> */}
                     <div className="flex justify-between px-4 my-2">
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        className="hover:bg-red-600/80"
-                        onClick={() => {
-                          doSignOut();
-                        }}
-                      >
-                        Logout
-                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="hover:bg-red-600/80 mx-2"
+                          >
+                            Logout
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              You want to logout from the application ,
+                            </AlertDialogDescription>
+                            <AlertDialogDescription>
+                              You can login again , we save your progress .
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => {
+                                doSignOut();
+                              }}
+                            >
+                              Continue
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                       <Button
                         variant="default"
                         className="bg-green-400 hover:bg-green-500/90"
@@ -137,7 +170,8 @@ export default function Navbar() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline">
-                    {currentUser?.displayName || "User"}
+                    {currentUser?.displayName ||
+                      `User_${Math.floor(Math.random() * 10000)}`}{" "}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -154,16 +188,38 @@ export default function Navbar() {
                   </DropdownMenuGroup>
                   {/* <DropdownMenuSeparator /> */}
                   <div className="flex justify-between px-4 my-2">
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      className="hover:bg-red-600/80"
-                      onClick={() => {
-                        doSignOut();
-                      }}
-                    >
-                      Logout
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          className="hover:bg-red-600/80 mx-2"
+                        >
+                          Logout
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            You want to logout from the application ,
+                          </AlertDialogDescription>
+                          <AlertDialogDescription>
+                            You can login again , we save your progress .
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => {
+                              doSignOut();
+                            }}
+                          >
+                            Continue
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                     <Button
                       variant="default"
                       className="bg-green-400 hover:bg-green-500/90"
