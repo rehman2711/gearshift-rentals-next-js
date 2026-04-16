@@ -16,7 +16,7 @@ const ViewBookings = () => {
     setIsLoading(true);
     try {
       const result = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/book_car`
+        `${process.env.NEXT_PUBLIC_API_URL}/all-non-approved-bookings`
       );
       setViewCustomerBookings(result.data);
     } catch (error) {
@@ -35,7 +35,7 @@ const ViewBookings = () => {
   const bookingCompleted = async (booking_completed_id) => {
     try {
       await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/delete-booking/${booking_completed_id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/approve-the-booking/${booking_completed_id}`
       );
       fetchCustomer();
     } catch (error) {
