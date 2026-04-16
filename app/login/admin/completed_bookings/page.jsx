@@ -16,7 +16,7 @@ const ViewBookings = () => {
     setIsLoading(true);
     try {
       const result = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/bookings_completed`
+        `${process.env.NEXT_PUBLIC_API_URL}/all-approved-bookings`
       );
       setViewCustomerBookings(result.data);
     } catch (error) {
