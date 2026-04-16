@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Badge } from "@/components/retroui/Badge";
 import { Text } from "@/components/retroui/Text";
-import { sideNavItems } from "@/app/configs/mobile-sidebar";
+import { sideNavItems } from "@/configs/mobile-sidebar";
 
 interface SideNavProps {
   setIsOpen?: (isOpen: boolean) => void;

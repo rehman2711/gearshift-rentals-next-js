@@ -4,7 +4,7 @@ import Link from "next/link";
 import MobileMenuToggle from "./mobile-menu-toggle";
 import { usePathname, useRouter } from "next/navigation";
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import { WebNavbarItems } from "@/app/configs/web-nav";
+import { WebNavbarItems } from "@/configs/web-nav";
 import { useAuth } from "@/contexts/authContext/page";
 import { doSignOut, doPasswordReset } from "@/firebase/auth";
 import { Button } from "@/components/ui/button";
